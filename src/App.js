@@ -34,7 +34,7 @@ class App extends Component {
     var markers = this.state.markers;
     markers.splice(this.state.currentSelection.id, 1);
     this.setState({
-      marekers: markers,
+      markers: markers,
       currentSelection: {
         name: '',
         id: ''
