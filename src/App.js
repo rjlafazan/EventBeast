@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 // import Map from './Components/Map'
 import GoogleMap from './Components/GoogleMap'
+import MeetUpAPI, {parseMeetup} from './api/MeetUpAPI';
+
+
 
 class App extends Component {
   constructor(){
@@ -9,7 +12,8 @@ class App extends Component {
     this.state = {
       currentSelection:  {
         name: '',
-        id: ''
+        id: '',
+        description: ''
       },
       markers: []
     };
@@ -17,11 +21,21 @@ class App extends Component {
     this.onClick = this.onClick.bind(this);
     this.setMarker = this.setMarker.bind(this);
   }
+  componentDidMount(){
+    MeetUpAPI.setCallBack(data=>{
+      var meetupArray = parseMeetup(data);
+      this.setState({
+        markers: meetupArray
+      })
+    })
+    MeetUpAPI.fetchP();
+  }
   getClick(selection) {
     this.setState({
       currentSelection: {
         name: selection.name,
-        id: selection.id
+        id: selection.id,
+        description: selection.description
       }
     })
   }
@@ -54,6 +68,7 @@ class App extends Component {
           getClick={this.getClick} 
           setMarker={this.setMarker} 
           markers={this.state.markers} 
+          currentSelection={this.state.currentSelection}
         />
         </div>
         <div>Current Selection: {this.state.currentSelection.name}

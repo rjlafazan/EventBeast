@@ -1,32 +1,34 @@
 import React, { Component } from 'react';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
-import uuidv4 from 'uuid/v4'
 
 export class MapContainer extends Component {
     constructor(props){
         super(props)
-        this.onClick = this.onClick.bind(this);
+        this.onMapClick = this.onMapClick.bind(this);
         this.onMarkerClick = this.onMarkerClick.bind(this);
+        this.state = {
+            activeMarker: null,
+            showingInfoWindow: false
+        }
     }
 onMarkerClick(props, marker, e){
     this.props.getClick({
         name: props.name,
-        id: props.num
+        id: props.num,
+        description: props.description
     });
+    this.setState({
+        activeMarker: marker,
+        showingInfoWindow: true
+    })
 }
-onClick(mapProps, map, clickEvent){
-    var lat = clickEvent.latLng.lat();
-    var lng = clickEvent.latLng.lng();
-    var markers = this.props.markers;
-    markers.push({
-        lat: lat, 
-        lng: lng, 
-        key: uuidv4(),
-        name: "Marker @ lat: " + lat + " lng: " + lng
-    });
-    this.props.setMarker({
-        markers: markers
-    });
+onMapClick(mapProps, map, clickEvent){
+    if(this.state.showingInfoWindow){
+        this.setState({
+            showingInfoWindow: false,
+            activeMarker: null
+        })
+    }
 }
 render() {
     const style = {
@@ -42,10 +44,9 @@ render() {
       <Map 
         google={this.props.google}
         zoom={14}
-        styles={style}
         containerStyle={style}
         centerAroundCurrentLocation={true}
-        onClick={this.onClick}
+        onClick={this.onMapClick}
         initialCenter={initialCenter}
         >
 
@@ -54,10 +55,22 @@ render() {
                 onClick={this.onMarkerClick}
                 num={index}
                 name={marker.name}
+                title={marker.title}
                 position={{lat: marker.lat, lng: marker.lng}} 
                 key={marker.key} 
+                description={marker.description}
             />
         )}
+        <InfoWindow
+            marker={this.state.activeMarker}
+            visible={this.state.showingInfoWindow}>
+            <div>
+                <h3>{this.props.currentSelection.name}</h3>
+                <div
+                    dangerouslySetInnerHTML={{__html: this.props.currentSelection.description}}>
+                </div>
+            </div>
+        </ InfoWindow>
       </Map>
     );
   }

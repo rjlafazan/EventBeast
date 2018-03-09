@@ -1,3 +1,4 @@
+import fetchJsonp from 'fetch-jsonp';
 
 export default class AjaxRequest {
     constructor(baseUrl, callback, options = {}){
@@ -21,6 +22,13 @@ export default class AjaxRequest {
     }
     getUrl(){
         return this.url;
+    }
+    fetchP(){
+        fetchJsonp(this.url)
+            .then(response => response.json())
+            .then(data => {
+                this.callback(data.data);
+            })
     }
     fetch(){
         fetch(this.url)
