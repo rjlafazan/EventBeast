@@ -5,7 +5,7 @@ export default class AjaxRequest {
         this.baseUrl = baseUrl;
         this.options = options;
         this.callback = callback;
-        this.url = '';
+        this.url = this.baseUrl;
     }
     setParam(params){
         var keys = Object.keys(params);
