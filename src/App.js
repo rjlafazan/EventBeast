@@ -4,45 +4,38 @@ import './App.css';
 import SearchBar from "./SearchBar"
 import SideList from "./SideList"
 import {render} from 'react-dom';
+import Nav from './NavBar'
+import SideBar from './sideBar'
+import BeastTheme from './ThemeMaterialUI'
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class App extends Component {
   constructor(){
     super();
     this.state = {
       eventCategories: [],
-      events: []
+      events: [],
+      sidebar: false,
     }
+    this.callBack = this.callBack.bind(this);
   }
-  componentDidMount(){
-    fetch("https://api.meetup.com/2/categories?&sign=true&photo-host=public&page=20&key=436d386b764018255e52695046494f59")
-    .then(results=>{
-      if(results.ok){
-      results.json();
-      }else{
-        console.log("didn't get results...");
-      }
-    }).then(data => {
-      console.log(data);
-      // this.setState({eventCategories: data});
-    });
-    fetch("https://api.meetup.com/find/upcoming_events?photo-host=public&page=20&sig_id=249675255&radius=10&lon=-121.478851&lat=38.575764&sig=7e270d9c33b996ada2a448b9347378e2152f18b0")
-    .then(results=>{
-      if(results.ok){
-        results.json();
-        }else{
-          console.log("didn't get results...");
-        }
-    }).then(data=>{
-      console.log(data);
-      // this.setState({events: data.result});
-    });
+
+  callBack(){
+    this.setState({sidebar: !this.state.sidebar});
   }
 
   render() {
     return (
       <div className = 'wrapper'>
-          <SideList className = "sideList" events = {this.state.events}/>
-          <SearchBar className = "searchBar" categories = {this.state.eventCategories}/>
+        <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
+          <Nav className = 'navBar'/>
+      
+          {/* <SideList className = "sideList" events = {this.state.events}/> */}
+          <SideBar openClose = {this.state.sidebar}/>
+          {/* <SideList/> */}
+          <SearchBar className = "searchBar" categories = {this.state.eventCategories} callback = {this.callBack}/>
+          </MuiThemeProvider>
        </div>
       
     );

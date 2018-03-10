@@ -1,9 +1,14 @@
 .wrapper{
     display:flex;
-    justify-content: center;
+    flex-flow: row wrap;
+    justify-content: space-between;
     width: 100%;
-    height: 100%;
+}
+.navBar{
+    display: inline-block !important;
+    width: 100% !important;
+
 }
 .sideListCSS{
-    width: 300px;
+    width: 30%;
 }
