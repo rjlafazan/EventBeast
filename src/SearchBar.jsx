@@ -1,6 +1,5 @@
 import React, {Component} from "react"
 import ReactDOM from 'react-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -26,11 +25,11 @@ import './SearchBar.css'
 
     render(){
         return(
-            <MuiThemeProvider>
             <Toolbar className = 'Toolbar'>
                 <ToolbarGroup firstChild={true}>
                 <ToolbarTitle className = "ToolbarTitle" text="Search in" />
                 <TextField
+                    id='citySearchField'
                     underlineFocusStyle = {{borderColor: orange500}}
                     underlineStyle = {{borderColor:grey800}}
                     hintText="city"
@@ -51,10 +50,10 @@ import './SearchBar.css'
                     </DropDownMenu>
                 </ToolbarGroup>
                 <ToolbarGroup lastChild = {true}>
-                <RaisedButton  class ="btn-search" label="Search"/>
+                <RaisedButton  primary={true} label="Search" onClick = {this.props.callback}/>
                 </ToolbarGroup>
             </Toolbar>
-            </MuiThemeProvider>
+
         );
     }
 }

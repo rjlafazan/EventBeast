@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {List, ListItem} from 'material-ui/List';
 import {orange500, grey600, grey50} from 'material-ui/styles/colors';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Avatar from 'material-ui/Avatar';
 import './SideList.css'
 
@@ -19,7 +18,6 @@ export default class SideList extends Component{
 
     render(){
         return (
-            <MuiThemeProvider>
             <List className = 'listBkg'>
                {/* {this.props.events.map((event)=>{
                    <ListItem 
@@ -33,7 +31,6 @@ export default class SideList extends Component{
                 <ListItem className = 'listItemCSS' primaryText ='third event' leftAvatar={<Avatar size ={40}/>}/>
                 <ListItem className = 'listItemCSS' primaryText ='third event' leftAvatar={<Avatar size ={40}/>}/>
             </List>
-            </MuiThemeProvider>
         );
     } 
  }
