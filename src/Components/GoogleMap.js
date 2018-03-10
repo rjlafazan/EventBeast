@@ -1,6 +1,7 @@
 //expected props:
-// markers : a list of markers to display on the map
+// markers : a list of events to display on the map
 // getMarkerClick : a callback function that returns which marker was clicked to the parent
+// createServices : a callback function that is called when map is ready. Will create the places and geocoder services
 
 
 import React, { Component } from 'react';
@@ -13,7 +14,8 @@ export class MapContainer extends Component {
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.state = {
             activeMarker: null,
-            showingInfoWindow: false
+            showingInfoWindow: false,
+            search: ''
         }
     }
 onMarkerClick(props, marker, e){
@@ -41,8 +43,8 @@ render() {
         height: '500px'
       };
       const initialCenter = {
-        lat: 38.580110,
-        lng: -121.487503
+        lat: this.props.center.lat,
+        lng: this.props.center.lng
       };
     
     return (
@@ -53,6 +55,8 @@ render() {
         centerAroundCurrentLocation={true}
         onClick={this.onMapClick}
         initialCenter={initialCenter}
+        visible={true}
+        onReady={this.props.createServices}
         >
 
         {this.props.markers.map( (marker, index) => 
@@ -64,6 +68,7 @@ render() {
                 position={{lat: marker.lat, lng: marker.lng}} 
                 key={marker.key} 
                 description={marker.description}
+                
             />
         )}
         <InfoWindow
