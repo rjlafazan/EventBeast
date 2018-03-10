@@ -1,0 +1,14 @@
+.Toolbar{
+    box-sizing: content-box;
+    width: 100%;
+    height: 100%;
+    background: #616161 !important;
+}
+.btn-search{
+    background: #ff9800 !important;
+}
+.ToolbarTitle{
+    padding: 1rem !important;
+    color: black !important;
+    font-size: 1rem !important;
+}

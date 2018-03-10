@@ -6,25 +6,11 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import TextField from 'material-ui/TextField';
-import {orange500, grey600, grey50} from 'material-ui/styles/colors';
+import {orange500, grey800} from 'material-ui/styles/colors'
+import './SearchBar.css'
 
-const style = {
-    underlineStyle: {
-        borderColor: orange500,
-      },
-      backgroundColor: {
-          backgroundColor: orange500,
-      },
-      toolbarColor:{
-        backgroundColor: grey600,
-      },
-      labelColor:{
-        color: orange500,
-      }
 
-  };
-
-class SearchBar extends Component{
+  export default class SearchBar extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -41,15 +27,16 @@ class SearchBar extends Component{
     render(){
         return(
             <MuiThemeProvider>
-            <Toolbar style = {style.toolbarColor}>
+            <Toolbar className = 'Toolbar'>
                 <ToolbarGroup firstChild={true}>
-                <ToolbarTitle style = {style.labelColor} text="Search in" />
-                <TextField 
-                    underlineFocusStyle={style.underlineStyle}
+                <ToolbarTitle className = "ToolbarTitle" text="Search in" />
+                <TextField
+                    underlineFocusStyle = {{borderColor: orange500}}
+                    underlineStyle = {{borderColor:grey800}}
                     hintText="city"
                     onChange = {this.setCity}
                 />
-                <ToolbarTitle text="within" />
+                <ToolbarTitle className = "ToolbarTitle" text="within" />
                 <DropDownMenu value={this.state.radiusValue} onChange={this.chooseRadius}>
                         <MenuItem value={1} primaryText="5 miles"/>
                         <MenuItem value={2} primaryText="10 miles"/>
@@ -57,23 +44,17 @@ class SearchBar extends Component{
                         <MenuItem value={4} primaryText="50 miles"/>
                         <MenuItem value={5} primaryText="100 miles"/>
                     </DropDownMenu>
-                    <ToolbarTitle text="in" />
+                    <ToolbarTitle className = "ToolbarTitle" text="in" />
                     <DropDownMenu value={this.state.categoryValue} onChange={this.chooseCategory}>
                     <MenuItem value={1} primaryText="Categories" />
                     {this.props.categories.map((category, index)=><MenuItem value = {index} primaryText = {category.name}/>)}
                     </DropDownMenu>
-
                 </ToolbarGroup>
                 <ToolbarGroup lastChild = {true}>
-                <RaisedButton buttonStyle={style.backgroundColor} label="Search"/>
+                <RaisedButton  class ="btn-search" label="Search"/>
                 </ToolbarGroup>
             </Toolbar>
             </MuiThemeProvider>
         );
     }
-
-
-
 }
-
-export default SearchBar;
