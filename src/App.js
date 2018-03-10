@@ -17,9 +17,7 @@ class App extends Component {
       },
       markers: []
     };
-    this.getClick = this.getClick.bind(this);
-    this.onClick = this.onClick.bind(this);
-    this.setMarker = this.setMarker.bind(this);
+    this.getMarkerClick = this.getMarkerClick.bind(this);
   }
   componentDidMount(){
     MeetUpAPI.setCallBack(data=>{
@@ -30,7 +28,7 @@ class App extends Component {
     })
     MeetUpAPI.fetchP();
   }
-  getClick(selection) {
+  getMarkerClick(selection) {
     this.setState({
       currentSelection: {
         name: selection.name,
@@ -38,22 +36,6 @@ class App extends Component {
         description: selection.description
       }
     })
-  }
-  setMarker(marker){
-    this.setState({
-      markers: marker.markers
-    })
-  }
-  onClick(event){
-    var markers = this.state.markers;
-    markers.splice(this.state.currentSelection.id, 1);
-    this.setState({
-      markers: markers,
-      currentSelection: {
-        name: '',
-        id: ''
-      }
-    });
   }
   render() {
     const style = {
@@ -65,18 +47,11 @@ class App extends Component {
       <div className="App">
         <div id="container" style={style}>
         <GoogleMap 
-          getClick={this.getClick} 
-          setMarker={this.setMarker} 
+          getMarkerClick={this.getMarkerClick} 
           markers={this.state.markers} 
           currentSelection={this.state.currentSelection}
         />
         </div>
-        <div>Current Selection: {this.state.currentSelection.name}
-          
-        </div>
-        {(this.state.currentSelection.name !== '' && <a onClick={this.onClick} href="#">
-            Delete Marker
-          </a>)}
       </div>
     );
   }

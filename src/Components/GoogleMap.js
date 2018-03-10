@@ -1,3 +1,8 @@
+//expected props:
+// markers : a list of markers to display on the map
+// getMarkerClick : a callback function that returns which marker was clicked to the parent
+
+
 import React, { Component } from 'react';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
@@ -12,7 +17,7 @@ export class MapContainer extends Component {
         }
     }
 onMarkerClick(props, marker, e){
-    this.props.getClick({
+    this.props.getMarkerClick({
         name: props.name,
         id: props.num,
         description: props.description
