@@ -10,31 +10,23 @@ import {orange500, grey800} from 'material-ui/styles/colors'
   export default class SearchBar extends Component{
     constructor(props){
         super(props);
-        this.state = {
-            categoryValue: 1,
-            radiusValue: 1,
-            city: ''
-        }
     };
-
-    chooseCategory = (event, index, value) => this.setState({categoryValue: value});
-    chooseRadius = (event,index,value)=> this.setState({radiusValue: value});
-    changeCity = (event)=> this.setState({city: event.trigger.key});
-
     render(){
         return(
-            <Toolbar>
+            <Toolbar style={{'z-index': '5'}}>
                 <ToolbarGroup>
                 <ToolbarTitle text="Search in" />
                 <TextField
                     id='citySearchField'
                     underlineFocusStyle = {{borderColor: orange500}}
                     underlineStyle = {{borderColor:grey800}}
-                    hintText="city"
-                    onChange = {this.setCity}
+                    placeholder="city"
+                    onChange={this.props.onSearchChange}
+                    value={this.props.search.city}
+                    errorText={this.props.searchError}
                 />
                 <ToolbarTitle text="within" />
-                <DropDownMenu value={this.state.radiusValue} onChange={this.chooseRadius}>
+                <DropDownMenu value={this.props.search.radius} onChange={this.props.onRadiusChange}>
                         <MenuItem value={1} primaryText="5 miles"/>
                         <MenuItem value={2} primaryText="10 miles"/>
                         <MenuItem value={3} primaryText="25 miles"/>
@@ -42,7 +34,7 @@ import {orange500, grey800} from 'material-ui/styles/colors'
                         <MenuItem value={5} primaryText="100 miles"/>
                     </DropDownMenu>
                     <ToolbarTitle text="in" />
-                    <DropDownMenu value={this.state.categoryValue} onChange={this.chooseCategory}>
+                    <DropDownMenu value={this.props.search.category} onChange={this.props.onCategoryChange}>
                     <MenuItem value={1} primaryText="Categories" />
                     {this.props.categories.map((category, index)=><MenuItem value = {index} primaryText = {category.name}/>)}
                     </DropDownMenu>

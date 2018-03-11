@@ -39,8 +39,9 @@ onMapClick(mapProps, map, clickEvent){
 }
 render() {
     const style = {
-        width: '500px',
-        height: '500px'
+        width: '100%',
+        height: '100%',
+        position: 'initial'
       };
       const initialCenter = {
         lat: this.props.center.lat,
@@ -52,7 +53,7 @@ render() {
         google={this.props.google}
         zoom={14}
         containerStyle={style}
-        centerAroundCurrentLocation={true}
+        // centerAroundCurrentLocation={true}
         onClick={this.onMapClick}
         initialCenter={initialCenter}
         visible={true}

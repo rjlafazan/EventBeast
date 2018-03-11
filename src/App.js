@@ -6,9 +6,12 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './style/App.css';
 //Components
-import Nav from './components/NavBar'
-import SearchBar from "./components/SearchBar"
-import SideBar from './components/SideBar'
+import Nav from './Components/NavBar'
+import SearchBar from "./Components/SearchBar"
+import SideBar from './Components/SideBar'
+import GoogleMap from './Components/GoogleMap'
+//API
+import MeetUpApi from './api/MeetUpAPI'
 
 class App extends Component {
   constructor(){
@@ -17,12 +20,117 @@ class App extends Component {
       eventCategories: [],
       events: [],
       sidebar: false,
+      center: {
+        lat: 38.580110,
+        lng: -121.487503
+      },
+      currentSelection: {
+        name: '',
+        id: '',
+        description: ''
+      },
+      search: {
+        city: '',
+        radius: 1,
+        category: 1
+      },
+      searchError: ''
     }
     this.callBack = this.callBack.bind(this);
+    this.createServices = this.createServices.bind(this);
+    this.onSearchChange = this.onSearchChange.bind(this);
+    this.onCategoryChange = this.onCategoryChange.bind(this);
+    this.onRadiusChange = this.onRadiusChange.bind(this);
+    this.setPlace = this.setPlace.bind(this);
+  }
+  getRadius(){
+    switch(this.state.search.radius){
+      case 1:
+        return 5;
+        break;
+      case 2:
+        return 10;
+        break;
+      case 3:
+        return 25;
+        break;
+      case 4:
+        return 50;
+        break;
+      case 5:
+        return 100;
+        break;
+    }
+  }
+  milesToMeters(miles){
+    return miles * 1609;
   }
 
   callBack(){
-    this.setState({sidebar: !this.state.sidebar});
+    // this.setState({sidebar: !this.state.sidebar});
+    this.geocoder.geocode({address: this.state.search.city}, (results, status) => {
+      if(status === 'OK'){
+        this.setState({searchError: ''})
+        var lat = results[0].geometry.location.lat();
+        var lng = results[0].geometry.location.lng();
+        var newLatLng = new this.google.maps.LatLng(lat, lng);
+        var circleOptions = {
+          center: newLatLng,
+          radius: this.milesToMeters(this.getRadius())
+        };
+        var circle = new this.google.maps.Circle(circleOptions);
+        this.map.fitBounds(circle.getBounds());
+      }
+      else{
+        this.setState({searchError: status})
+      }
+    })
+  }
+  setPlace(){
+    if(this.autoComplete.getPlace().formatted_address){
+      this.setState({
+        search: {
+          city: this.autoComplete.getPlace().formatted_address,
+          radius: this.state.search.radius,
+          category: this.state.search.category
+        }
+      })
+    }
+  }
+  createServices(mapProps, map){
+    const {google} = mapProps;
+    this.google = google;
+    this.map = map;
+    this.autoComplete = new google.maps.places.Autocomplete(document.getElementById('citySearchField'));
+    this.autoComplete.addListener('place_changed', this.setPlace);
+    this.geocoder = new google.maps.Geocoder();
+  }
+  onSearchChange(event){
+    this.setState({
+      search: {
+        city: event.target.value,
+        radius: this.state.search.radius,
+        category: this.state.search.category
+      }
+    })
+  }
+  onCategoryChange(event, index, value){
+    this.setState({
+      search: {
+        city: this.state.search.city,
+        radius: this.state.search.radius,
+        category: value
+      }
+    })
+  }
+  onRadiusChange(event, index, value){
+    this.setState({
+      search: {
+        city: this.state.search.city,
+        radius: value,
+        category: this.state.search.category
+      }
+    })
   }
 
   render() {
@@ -35,8 +143,25 @@ class App extends Component {
           <SideBar openClose = {this.state.sidebar}/>
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
-          <SearchBar className = "searchBar" categories = {this.state.eventCategories} callback = {this.callBack}/>
+          <SearchBar 
+            className="searchBar" 
+            categories={this.state.eventCategories} 
+            callback={this.callBack}
+            onSearchChange={this.onSearchChange}
+            onCategoryChange={this.onCategoryChange}
+            onRadiusChange={this.onRadiusChange}
+            search={this.state.search}
+            searchError={this.state.searchError}
+          />
           </MuiThemeProvider>
+          <div>
+            <GoogleMap
+              center={this.state.center}
+              markers={this.state.events}
+              currentSelection={this.state.currentSelection}
+              createServices={this.createServices}
+            />
+          </div>
        </div>
       
     );
