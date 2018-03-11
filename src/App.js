@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import SearchBar from "./SearchBar"
-import SideList from "./SideList"
 import {render} from 'react-dom';
-import Nav from './NavBar'
-import SideBar from './sideBar'
-import BeastTheme from './ThemeMaterialUI'
+//Theme and styling
+import BeastTheme from './style/BeastTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import './style/App.css';
+//Components
+import Nav from './components/NavBar'
+import SearchBar from "./components/SearchBar"
+import SideBar from './components/SideBar'
 
 class App extends Component {
   constructor(){
@@ -30,10 +30,11 @@ class App extends Component {
       <div className = 'wrapper'>
         <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
           <Nav className = 'navBar'/>
-      
-          {/* <SideList className = "sideList" events = {this.state.events}/> */}
+          </MuiThemeProvider>
+          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
           <SideBar openClose = {this.state.sidebar}/>
-          {/* <SideList/> */}
+          </MuiThemeProvider>
+          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
           <SearchBar className = "searchBar" categories = {this.state.eventCategories} callback = {this.callBack}/>
           </MuiThemeProvider>
        </div>
