@@ -4,7 +4,9 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import TextField from 'material-ui/TextField';
-import {orange500, grey800} from 'material-ui/styles/colors'
+//for inline styles
+import {orange600, grey700} from 'material-ui/styles/colors'
+import {white} from 'material-ui/styles/colors'
 
 
   export default class SearchBar extends Component{
@@ -23,32 +25,67 @@ import {orange500, grey800} from 'material-ui/styles/colors'
 
     render(){
         return(
-            <Toolbar>
+            <Toolbar style={{width:'70%'}}>
                 <ToolbarGroup>
-                <ToolbarTitle text="Search in" />
+
+                <ToolbarTitle 
+                text="Search in" 
+                style={{color: white, paddingRight: 0}}
+                />
+
                 <TextField
                     id='citySearchField'
-                    underlineFocusStyle = {{borderColor: orange500}}
-                    underlineStyle = {{borderColor:grey800}}
                     hintText="city"
+                    style = {{width: 150, margin: 24, fontSize: 20}}
                     onChange = {this.setCity}
                 />
-                <ToolbarTitle text="within" />
-                <DropDownMenu value={this.state.radiusValue} onChange={this.chooseRadius}>
-                        <MenuItem value={1} primaryText="5 miles"/>
-                        <MenuItem value={2} primaryText="10 miles"/>
-                        <MenuItem value={3} primaryText="25 miles"/>
-                        <MenuItem value={4} primaryText="50 miles"/>
-                        <MenuItem value={5} primaryText="100 miles"/>
-                    </DropDownMenu>
-                    <ToolbarTitle text="in" />
-                    <DropDownMenu value={this.state.categoryValue} onChange={this.chooseCategory}>
-                    <MenuItem value={1} primaryText="Categories" />
-                    {this.props.categories.map((category, index)=><MenuItem value = {index} primaryText = {category.name}/>)}
-                    </DropDownMenu>
+
+                <ToolbarTitle 
+                    text="within" 
+                    style={{color: white, paddingRight: 10}} 
+                />
+
+                <DropDownMenu 
+                    value={this.state.radiusValue} 
+                    onChange={this.chooseRadius} 
+                    labelStyle = {{lineHeight: '50px', fontSize: 20}}
+                    listStyle = {{paddingTop: 10, paddingBottom: 10}}
+                >
+                    <MenuItem style = {{fontSize: 20}} value={1} primaryText="5 miles"/>
+                    <MenuItem style = {{fontSize: 20}} value={2} primaryText="10 miles"/>
+                    <MenuItem style = {{fontSize: 20}} value={3} primaryText="25 miles"/>
+                    <MenuItem style = {{fontSize: 20}} value={4} primaryText="50 miles"/>
+
+                </DropDownMenu>
+
+                <ToolbarTitle 
+                text="in" 
+                style={{color: white, paddingRight: 10}}
+                />
+
+                <DropDownMenu 
+                value={this.state.categoryValue} 
+                onChange={this.chooseCategory} 
+                labelStyle = {{lineHeight: '50px', fontSize: 20}}
+                listStyle = {{paddingTop: 10, paddingBottom:10}}
+                >
+                    <MenuItem style = {{fontSize: 20}} value={1} primaryText="Categories"/>
+
+                    {this.props.categories.map((category, index)=><MenuItem 
+                    style = {{fontSize: 20}} 
+                    value = {index} 
+                    primaryText = {category.name}
+                    />)}
+
+                </DropDownMenu>
                 </ToolbarGroup>
+
                 <ToolbarGroup lastChild = {true}>
-                <RaisedButton  primary={true} label="Search" onClick = {this.props.callback}/>
+                    <RaisedButton  
+                    primary={true} 
+                    label="Search" 
+                    onClick = {this.props.callback}
+                    />
                 </ToolbarGroup>
             </Toolbar>
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {render} from 'react-dom';
 //Theme and styling
 import BeastTheme from './style/BeastTheme'
+import NewZIndex from './style/NewZIndex'
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './style/App.css';
@@ -9,6 +10,7 @@ import './style/App.css';
 import Nav from './components/NavBar'
 import SearchBar from "./components/SearchBar"
 import SideBar from './components/SideBar'
+
 
 class App extends Component {
   constructor(){
@@ -28,17 +30,16 @@ class App extends Component {
   render() {
     return (
       <div className = 'wrapper'>
-        <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
+        <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
           <Nav className = 'navBar'/>
           </MuiThemeProvider>
-          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
+          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
           <SideBar openClose = {this.state.sidebar}/>
           </MuiThemeProvider>
-          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
+          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
           <SearchBar className = "searchBar" categories = {this.state.eventCategories} callback = {this.callBack}/>
           </MuiThemeProvider>
        </div>
-      
     );
   }
 }

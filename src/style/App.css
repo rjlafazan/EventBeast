@@ -1,13 +1,12 @@
 .wrapper{
     display:flex;
     flex-flow: row wrap;
-    justify-content: space-between;
+    justify-content: flex-end;
     width: 100%;
 }
 .navBar{
     display: inline-block !important;
     width: 100% !important;
-
 }
 .sideListCSS{
     width: 30%;
