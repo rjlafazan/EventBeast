@@ -25,7 +25,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => this.setState({ loading: false }), 2000); // simulates an async action, and hides the spinner
+    setTimeout(() => this.setState({ loading: false }), 3000); // simulates an async action, and hides the spinner
   }
 
   callBack(){
