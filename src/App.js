@@ -19,6 +19,7 @@ class App extends Component {
     this.state = {
       eventCategories: [],
       events: [],
+      activeEvent: null,
       sidebar: false,
       center: {
         lat: 38.580110,
@@ -42,6 +43,7 @@ class App extends Component {
     this.onCategoryChange = this.onCategoryChange.bind(this);
     this.onRadiusChange = this.onRadiusChange.bind(this);
     this.setPlace = this.setPlace.bind(this);
+    this.getMarkerClick = this.getMarkerClick.bind(this);
   }
   getRadius(){
     switch(this.state.search.radius){
@@ -65,25 +67,26 @@ class App extends Component {
     // this.setState({sidebar: !this.state.sidebar});
     this.geocoder.geocode({address: this.state.search.city}, (results, status) => {
       if(status === 'OK'){
-        this.setState({searchError: ''})
         var lat = results[0].geometry.location.lat();
         var lng = results[0].geometry.location.lng();
+        var radius = this.milesToMeters(this.getRadius())
         var newLatLng = new this.google.maps.LatLng(lat, lng);
         var circleOptions = {
           center: newLatLng,
-          radius: this.milesToMeters(this.getRadius())
+          radius: radius
         };
         var circle = new this.google.maps.Circle(circleOptions);
         this.map.fitBounds(circle.getBounds());
-        MeetUpApi.setParam({
-          sig_id: 249701286,
+        MeetUpApi.updateParam({
           lat: lat,
           lon: lng,
-          sig: 'ed6789b7b5d37f66964eeae887655760ab3b30dd'
+          radius: this.getRadius(),
+          topic_category: 1
         });
         MeetUpApi.fetchP(data=>{
           var meetupArray = parseMeetup(data.data);
           this.setState({
+            searchError: '',
             events: meetupArray
           })
         });
@@ -139,8 +142,10 @@ class App extends Component {
       }
     })
   }
-  getMarkerClick(){
-    return 0;
+  getMarkerClick(marker){
+    this.setState({
+      activeEvent: marker.activeMarker
+    })
   }
 
   render() {
@@ -150,7 +155,10 @@ class App extends Component {
           <Nav className = 'navBar'/>
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
-          <SideBar openClose = {this.state.sidebar}/>
+          <SideBar 
+            openClose={this.state.sidebar}
+            events={this.state.events}
+          />
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
           <SearchBar 

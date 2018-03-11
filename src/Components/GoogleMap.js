@@ -21,9 +21,7 @@ export class MapContainer extends Component {
     }
 onMarkerClick(props, marker, e){
     this.props.getMarkerClick({
-        name: props.name,
-        id: props.num,
-        description: props.description
+        activeMarker: props.num,
     });
     this.setState({
         activeMarker: marker,
@@ -76,15 +74,18 @@ render() {
         )}
         <InfoWindow
             marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}>
+            visible={this.state.showingInfoWindow}>           
+            <div>
             {this.state.showingInfoWindow &&
             <div>
                 <h3>{this.props.markers[this.state.num].name}</h3>
                 <div
                     dangerouslySetInnerHTML={{__html: this.props.markers[this.state.num].description}}>
                 </div>
+                <a href={this.props.markers[this.state.num].link}>Learn More</a>
             </div>
             }
+            </div> 
         </ InfoWindow>
       </Map>
     );

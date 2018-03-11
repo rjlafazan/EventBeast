@@ -11,18 +11,11 @@ export default class SideBar extends React.Component {
   render() {
     return (
         <Drawer open={this.props.openClose}>
-
-        {/* {this.props.events.map((event)=>{
-                   <Menu Item 
-                   primaryText = {event.name} 
-                   key = {event.id} 
-        />})} */}
-          <MenuItem className = 'Drawer'>Dummy 1</MenuItem>
-          <MenuItem className = 'Drawer'>Dummy 2</MenuItem>
-          <MenuItem className = 'Drawer'>Dummy 3</MenuItem>
-          <MenuItem className = 'Drawer'>Dummy 4</MenuItem>
-          <MenuItem className = 'Drawer'>Dummy 5</MenuItem>
-          <MenuItem className = 'Drawer'>Dummy 6</MenuItem>
+        {this.props.events.map((event)=>
+          <MenuItem 
+            primaryText={event.name} 
+            key ={event.id} 
+          />)}
         </Drawer>
     );
   }

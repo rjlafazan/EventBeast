@@ -13,7 +13,7 @@ import {orange500, grey800} from 'material-ui/styles/colors'
     };
     render(){
         return(
-            <Toolbar style={{'z-index': '5'}}>
+            <Toolbar style={{'zIndex': '5'}}>
                 <ToolbarGroup>
                 <ToolbarTitle text="Search in" />
                 <TextField

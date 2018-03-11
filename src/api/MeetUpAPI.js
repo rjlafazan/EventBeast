@@ -5,7 +5,8 @@ var params = {
     sig_id: 249701286,
     lat: 38.59540,
     lon: -121.486,
-    sig: 'ed6789b7b5d37f66964eeae887655760ab3b30dd'
+    sig: 'ed6789b7b5d37f66964eeae887655760ab3b30dd',
+    radius: 5
 }
 
 var MeetUpAPI = new AjaxRequest(url, data=>{console.log(data)}).setParam(params);
@@ -22,7 +23,13 @@ export function parseMeetup(data){
                 lng: event.venue.lon,
                 id: event.id,
                 key: event.id,
-                visibility: event.visibility
+                visibility: event.visibility,
+                start: event.time,          //UTC start time of the event, in milliseconds since the epoch
+
+                duration: event.duration,   //Scheduled event duration in milliseconds, if an end time is specified by the organizer. 
+                                            //When not present, a default of 3 hours may be assumed by applications
+
+                link: event.link
             })
         }
         else{
@@ -37,7 +44,10 @@ export function parseMeetup(data){
                 // lng: event.venue.lon,
                 id: event.id,
                 key: event.id,
-                visibility: event.visibility
+                visibility: event.visibility,
+                start: event.time,
+                duration: event.duration,
+                link: event.link
             })
         }
         
