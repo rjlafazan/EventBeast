@@ -21,7 +21,7 @@ import {
       textColor: white,
       alternateTextColor: white,
       canvasColor: grey700,//bkg-col for dropdown and drawer
-      borderColor: grey700,//text field underline not active state
+      borderColor: white,//text field underline not active state
       backgroundColor: grey700,//so far not used
       disabledColor: orange600, //fade(darkBlack, 0.3),//text field hint text
       pickerHeaderColor: orange500,//so far not used

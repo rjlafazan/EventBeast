@@ -16,6 +16,7 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
+      loading: true,
       eventCategories: [],
       events: [],
       sidebar: false,
@@ -23,11 +24,18 @@ class App extends Component {
     this.callBack = this.callBack.bind(this);
   }
 
+  componentDidMount() {
+    setTimeout(() => this.setState({ loading: false }), 2000); // simulates an async action, and hides the spinner
+  }
+
   callBack(){
     this.setState({sidebar: !this.state.sidebar});
   }
 
   render() {
+    if(this.state.loading){
+      return null;
+    }
     return (
       <div className = 'wrapper'>
         <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>

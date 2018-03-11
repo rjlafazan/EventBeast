@@ -2,9 +2,38 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
-  background: url("../img/map.png");
+  /* background: url("../img/map.png"); */
+  background: teal;
 }
 html,
 body{
   height: 100%;
+}
+#root{
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+#root:not(:empty)+.loader{
+  display: none;
+}
+.loader{
+  position: absolute;
+  left: 45%;
+  top: 45%;
+  z-index: 9999;
+  border-top: 16px solid #FB8C00;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  -webkit-animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
 }
