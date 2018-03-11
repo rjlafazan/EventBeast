@@ -1,12 +1,10 @@
 import React, {Component} from "react"
-import ReactDOM from 'react-dom';
 import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import TextField from 'material-ui/TextField';
 import {orange500, grey800} from 'material-ui/styles/colors'
-import './SearchBar.css'
 
 
   export default class SearchBar extends Component{
@@ -25,9 +23,9 @@ import './SearchBar.css'
 
     render(){
         return(
-            <Toolbar className = 'Toolbar'>
-                <ToolbarGroup firstChild={true}>
-                <ToolbarTitle className = "ToolbarTitle" text="Search in" />
+            <Toolbar>
+                <ToolbarGroup>
+                <ToolbarTitle text="Search in" />
                 <TextField
                     id='citySearchField'
                     underlineFocusStyle = {{borderColor: orange500}}
@@ -35,7 +33,7 @@ import './SearchBar.css'
                     hintText="city"
                     onChange = {this.setCity}
                 />
-                <ToolbarTitle className = "ToolbarTitle" text="within" />
+                <ToolbarTitle text="within" />
                 <DropDownMenu value={this.state.radiusValue} onChange={this.chooseRadius}>
                         <MenuItem value={1} primaryText="5 miles"/>
                         <MenuItem value={2} primaryText="10 miles"/>
@@ -43,7 +41,7 @@ import './SearchBar.css'
                         <MenuItem value={4} primaryText="50 miles"/>
                         <MenuItem value={5} primaryText="100 miles"/>
                     </DropDownMenu>
-                    <ToolbarTitle className = "ToolbarTitle" text="in" />
+                    <ToolbarTitle text="in" />
                     <DropDownMenu value={this.state.categoryValue} onChange={this.chooseCategory}>
                     <MenuItem value={1} primaryText="Categories" />
                     {this.props.categories.map((category, index)=><MenuItem value = {index} primaryText = {category.name}/>)}
