@@ -28,6 +28,9 @@ export function parseMeetup(data){
         else{
             array.push({
                 name: event.name,
+                description: 'This event has limited visibility to the public.',
+                lat: event.group.lat,
+                lng: event.group.lon,
                 // not available for non-public events
                 // description: event.description,
                 // lat: event.venue.lat,

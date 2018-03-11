@@ -11,7 +11,7 @@ import SearchBar from "./Components/SearchBar"
 import SideBar from './Components/SideBar'
 import GoogleMap from './Components/GoogleMap'
 //API
-import MeetUpApi from './api/MeetUpAPI'
+import MeetUpApi, {parseMeetup} from './api/MeetUpAPI'
 
 class App extends Component {
   constructor(){
@@ -47,19 +47,14 @@ class App extends Component {
     switch(this.state.search.radius){
       case 1:
         return 5;
-        break;
       case 2:
         return 10;
-        break;
       case 3:
         return 25;
-        break;
       case 4:
         return 50;
-        break;
       case 5:
         return 100;
-        break;
     }
   }
   milesToMeters(miles){
@@ -80,6 +75,18 @@ class App extends Component {
         };
         var circle = new this.google.maps.Circle(circleOptions);
         this.map.fitBounds(circle.getBounds());
+        MeetUpApi.setParam({
+          sig_id: 249701286,
+          lat: lat,
+          lon: lng,
+          sig: 'ed6789b7b5d37f66964eeae887655760ab3b30dd'
+        });
+        MeetUpApi.fetchP(data=>{
+          var meetupArray = parseMeetup(data.data);
+          this.setState({
+            events: meetupArray
+          })
+        });
       }
       else{
         this.setState({searchError: status})
@@ -132,6 +139,9 @@ class App extends Component {
       }
     })
   }
+  getMarkerClick(){
+    return 0;
+  }
 
   render() {
     return (
@@ -160,6 +170,7 @@ class App extends Component {
               markers={this.state.events}
               currentSelection={this.state.currentSelection}
               createServices={this.createServices}
+              getMarkerClick={this.getMarkerClick}
             />
           </div>
        </div>

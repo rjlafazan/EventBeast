@@ -23,14 +23,14 @@ export default class AjaxRequest {
     getUrl(){
         return this.url;
     }
-    fetchP(){
+    fetchP(callback = this.callback){
         fetchJsonp(this.url)
             .then(response => response.json())
             .then(data => {
-                this.callback(data.data);
+                callback(data);
             })
     }
-    fetch(){
+    fetch(callback = this.callback){
         fetch(this.url)
             .then(response => response.json())
             .then(data => {
