@@ -11,7 +11,7 @@ import SearchBar from "./Components/SearchBar"
 import SideBar from './Components/SideBar'
 import GoogleMap from './Components/GoogleMap'
 //API
-import MeetUpApi, {parseMeetup} from './api/MeetUpAPI'
+import MeetUpApi, {parseMeetup, categories, MeetUpCategories} from './api/MeetUpAPI'
 
 class App extends Component {
   constructor(){
@@ -33,7 +33,7 @@ class App extends Component {
       search: {
         city: '',
         radius: 1,
-        category: 1
+        category: 0
       },
       searchError: ''
     }
@@ -64,7 +64,7 @@ class App extends Component {
   }
 
   callBack(){
-    this.setState({sidebar: !this.state.sidebar});
+    // this.setState({sidebar: !this.state.sidebar});
     this.geocoder.geocode({address: this.state.search.city}, (results, status) => {
       if(status === 'OK'){
         var lat = results[0].geometry.location.lat();
@@ -77,12 +77,12 @@ class App extends Component {
         };
         var circle = new this.google.maps.Circle(circleOptions);
         this.map.fitBounds(circle.getBounds());
-        MeetUpApi.updateParam({
+        MeetUpCategories[this.state.search.category].updateParam({
           lat: lat,
           lon: lng,
           radius: this.getRadius()
         });
-        MeetUpApi.fetchP(data=>{
+        MeetUpCategories[this.state.search.category].fetchP(data=>{
           var meetupArray = parseMeetup(data.data);
           this.setState({
             searchError: '',
@@ -169,6 +169,7 @@ class App extends Component {
             onRadiusChange={this.onRadiusChange}
             search={this.state.search}
             searchError={this.state.searchError}
+            categories={categories}
           />
           </MuiThemeProvider>
           <div>

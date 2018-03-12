@@ -2,9 +2,11 @@
 // markers : a list of events to display on the map
 // getMarkerClick : a callback function that returns which marker was clicked to the parent
 // createServices : a callback function that is called when map is ready. Will create the places and geocoder services
+// getMarkerClick : a callback function that supplies the index of which marker was clicked
 
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
 export class MapContainer extends Component {
@@ -36,6 +38,12 @@ onMapClick(mapProps, map, clickEvent){
             activeMarker: null
         })
     }
+}
+shouldComponentUpdate(nextProps, nextState){
+    if(this.state === nextState && this.props.markers === nextProps.markers && this.props.loaded === nextProps.loaded){
+        return false;
+    }
+    return true;
 }
 render() {
     const style = {
@@ -90,6 +98,19 @@ render() {
       </Map>
     );
   }
+}
+
+//expected props:
+// markers : a list of events to display on the map
+// getMarkerClick : a callback function that returns which marker was clicked to the parent
+// createServices : a callback function that is called when map is ready. Will create the places and geocoder services
+// getMarkerClick : a callback function that supplies the index of which marker was clicked
+
+MapContainer.propTypes = {
+    markers: PropTypes.array,
+    getMarkerClick: PropTypes.func,
+    createServices: PropTypes.func,
+    getMarkerClick: PropTypes.func,
 }
 
 export default GoogleApiWrapper({
