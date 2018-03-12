@@ -118,9 +118,13 @@ class App extends Component {
     const { google } = mapProps;
     this.google = google;
     this.map = map;
+<<<<<<< HEAD
     this.autoComplete = new google.maps.places.Autocomplete(
       document.getElementById('citySearchField')
     );
+=======
+    this.autoComplete = new google.maps.places.Autocomplete(document.getElementById('citySearchField'));
+>>>>>>> added search bias
     this.autoComplete.bindTo('bounds', this.map);
     this.autoComplete.addListener('place_changed', this.setPlace);
     this.geocoder = new google.maps.Geocoder();
