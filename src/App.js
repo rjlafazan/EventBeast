@@ -111,6 +111,7 @@ class App extends Component {
     this.google = google;
     this.map = map;
     this.autoComplete = new google.maps.places.Autocomplete(document.getElementById('citySearchField'));
+    this.autoComplete.bindTo('bounds', this.map);
     this.autoComplete.addListener('place_changed', this.setPlace);
     this.geocoder = new google.maps.Geocoder();
   }
