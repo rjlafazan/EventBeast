@@ -71,40 +71,37 @@ class App extends Component {
     return miles * 1609;
   }
 
-  callBack() {
-    this.setState({ sidebar: !this.state.sidebar });
-    this.geocoder.geocode(
-      { address: this.state.search.city },
-      (results, status) => {
-        if (status === 'OK') {
-          var lat = results[0].geometry.location.lat();
-          var lng = results[0].geometry.location.lng();
-          var radius = this.milesToMeters(this.getRadius());
-          var newLatLng = new this.google.maps.LatLng(lat, lng);
-          var circleOptions = {
-            center: newLatLng,
-            radius: radius,
-          };
-          var circle = new this.google.maps.Circle(circleOptions);
-          this.map.fitBounds(circle.getBounds());
-          MeetUpCategories[this.state.search.category].updateParam({
-            lat: lat,
-            lon: lng,
-            radius: this.getRadius(),
-          });
-          MeetUpCategories[this.state.search.category].fetchP((data) => {
-            var meetupArray = parseMeetup(data.data);
-            this.setState({
-              searchError: '',
-              events: meetupArray,
-              showingInfoWindow: false,
-            });
-          });
-        } else {
-          this.setState({ searchError: status });
-        }
+  callBack(){
+    // this.setState({sidebar: !this.state.sidebar});
+    this.geocoder.geocode({address: this.state.search.city}, (results, status) => {
+      if(status === 'OK'){
+        var lat = results[0].geometry.location.lat();
+        var lng = results[0].geometry.location.lng();
+        var radius = this.milesToMeters(this.getRadius())
+        var newLatLng = new this.google.maps.LatLng(lat, lng);
+        var circleOptions = {
+          center: newLatLng,
+          radius: radius
+        };
+        var circle = new this.google.maps.Circle(circleOptions);
+        this.map.fitBounds(circle.getBounds());
+        MeetUpCategories[this.state.search.category].updateParam({
+          lat: lat,
+          lon: lng,
+          radius: this.getRadius()
+        });
+        MeetUpCategories[this.state.search.category].fetchP(data=>{
+          var meetupArray = parseMeetup(data.data);
+          this.setState({
+            searchError: '',
+            events: meetupArray
+          })
+        });
       }
-    );
+      else{
+        this.setState({searchError: status})
+      }
+    });
   }
   setPlace() {
     if (this.autoComplete.getPlace().formatted_address) {
