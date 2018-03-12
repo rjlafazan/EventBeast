@@ -36,7 +36,7 @@ import {orange500, grey800} from 'material-ui/styles/colors'
                     <ToolbarTitle text="in" />
                     <DropDownMenu value={this.props.search.category} onChange={this.props.onCategoryChange}>
                     <MenuItem value={0} primaryText="All Categories" />
-                    {this.props.categories.map((category, index)=><MenuItem value={index+1} primaryText={category.name}/>)}
+                    {this.props.categories.map((category, index)=><MenuItem value={index+1} primaryText={category.name} key={category.id}/>)}
                     </DropDownMenu>
                 </ToolbarGroup>
                 <ToolbarGroup lastChild = {true}>
