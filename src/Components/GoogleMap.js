@@ -8,6 +8,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+import InfoDisplay from './InfoDisplay'
 
 export class MapContainer extends Component {
     constructor(props){
@@ -17,7 +18,6 @@ export class MapContainer extends Component {
         this.state = {
             activeMarker: null,
             showingInfoWindow: false,
-            search: '',
             num: 0
         }
     }
@@ -59,7 +59,7 @@ render() {
     return (
       <Map 
         google={this.props.google}
-        zoom={14}
+        zoom={6}
         containerStyle={style}
         // centerAroundCurrentLocation={true}
         onClick={this.onMapClick}
@@ -82,8 +82,8 @@ render() {
         )}
         <InfoWindow
             marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}>           
-            <div>
+            visible={this.state.showingInfoWindow}>    
+            <div>       
             {this.state.showingInfoWindow &&
             <div>
                 <h3>{this.props.markers[this.state.num].name}</h3>
@@ -93,7 +93,7 @@ render() {
                 <a href={this.props.markers[this.state.num].link}>Learn More</a>
             </div>
             }
-            </div> 
+            </div>
         </ InfoWindow>
       </Map>
     );
@@ -116,3 +116,16 @@ MapContainer.propTypes = {
 export default GoogleApiWrapper({
   apiKey: "AIzaSyDLG4_hYBIcKhGyWq1bvypGZYUbzNi0yZM"
 })(MapContainer)
+
+
+/* <div>
+            {this.state.showingInfoWindow &&
+            <div>
+                <h3>{this.props.markers[this.state.num].name}</h3>
+                <div
+                    dangerouslySetInnerHTML={{__html: this.props.markers[this.state.num].description}}>
+                </div>
+                <a href={this.props.markers[this.state.num].link}>Learn More</a>
+            </div>
+            }
+            </div>  */
