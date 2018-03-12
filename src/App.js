@@ -64,7 +64,7 @@ class App extends Component {
   }
 
   callBack(){
-    // this.setState({sidebar: !this.state.sidebar});
+    this.setState({sidebar: !this.state.sidebar});
     this.geocoder.geocode({address: this.state.search.city}, (results, status) => {
       if(status === 'OK'){
         var lat = results[0].geometry.location.lat();
@@ -80,8 +80,7 @@ class App extends Component {
         MeetUpApi.updateParam({
           lat: lat,
           lon: lng,
-          radius: this.getRadius(),
-          topic_category: 1
+          radius: this.getRadius()
         });
         MeetUpApi.fetchP(data=>{
           var meetupArray = parseMeetup(data.data);
