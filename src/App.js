@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// import update from 'react-addons-update'; // ES6
 import {render} from 'react-dom';
 //Theme and styling
 import BeastTheme from './style/BeastTheme'
@@ -14,7 +15,8 @@ import SideBar from './Components/SideBar'
 import GoogleMap from './Components/GoogleMap'
 
 //API
-import MeetUpApi, {parseMeetup, categories, MeetUpCategories} from './api/MeetUpAPI'
+import MeetUpApi, {parseMeetup} from './api/MeetUpAPI';
+import DarkSkyApi, {getWeatherData} from './api/DarkSkyApi';
 
 class App extends Component {
   constructor(){
@@ -146,10 +148,24 @@ class App extends Component {
     })
   }
   getMarkerClick(marker){
+    //get weather data for the event clicked append to clicked event and return
+    var meets = this.state.events;
+    var meetWithWeather = getWeatherData(meets[marker.activeMarker]);
+    // console.log(meetWithWeather);
+    meets[marker.activeMarker] = meetWithWeather;
+    
     this.setState({
+<<<<<<< HEAD
       activeEvent: marker.activeMarker,
       showingInfoWindow: true
     })
+=======
+      events: meets,
+      activeEvent: marker.activeMarker
+    });
+    this.forceUpdate()
+    console.log(this.state.events[marker.activeMarker]);
+>>>>>>> updates this.state.events with weather for the marker/meet clicked
   }
   getMapClick(){
     this.setState({
