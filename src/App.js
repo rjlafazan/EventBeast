@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {render} from 'react-dom';
+import queryString from 'query-string'
 //Theme and styling
 import BeastTheme from './style/BeastTheme'
 import NewZIndex from './style/NewZIndex'
@@ -19,8 +20,8 @@ import MeetUpApi, {parseMeetup, categories, MeetUpCategories} from './api/MeetUp
 import firebase, {eventRef, uid} from './utils/Firebase'
 
 class App extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       eventCategories: [],
       events: [],
@@ -38,7 +39,9 @@ class App extends Component {
       },
       searchError: '',
       showingInfoWindow: false,
+      update: false
     }
+    this.fetchData = this.fetchData.bind(this);
     this.callBack = this.callBack.bind(this);
     this.createServices = this.createServices.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
@@ -48,8 +51,8 @@ class App extends Component {
     this.getMarkerClick = this.getMarkerClick.bind(this);
     this.getMapClick = this.getMapClick.bind(this);
   }
-  getRadius(){
-    switch(this.state.search.radius){
+  getRadius(rad){
+    switch(rad){
       case 1:
         return 10;
       case 2:
@@ -61,14 +64,14 @@ class App extends Component {
   milesToMeters(miles){
     return miles * 1609;
   }
-
-  callBack(){
-    // this.setState({sidebar: !this.state.sidebar});
-    this.geocoder.geocode({address: this.state.search.city}, (results, status) => {
+  fetchData(searchQuery){
+    searchQuery.cat = parseInt(searchQuery.cat)
+    searchQuery.rad = parseInt(searchQuery.rad)
+    this.geocoder.geocode({address: searchQuery.loc}, (results, status) => {
       if(status === 'OK'){
         var lat = results[0].geometry.location.lat();
         var lng = results[0].geometry.location.lng();
-        var radius = this.milesToMeters(this.getRadius())
+        var radius = this.milesToMeters(this.getRadius(searchQuery.rad))
         var newLatLng = new this.google.maps.LatLng(lat, lng);
         var circleOptions = {
           center: newLatLng,
@@ -76,12 +79,12 @@ class App extends Component {
         };
         var circle = new this.google.maps.Circle(circleOptions);
         this.map.fitBounds(circle.getBounds());
-        MeetUpCategories[this.state.search.category].updateParam({
+        MeetUpCategories[searchQuery.cat].updateParam({
           lat: lat,
           lon: lng,
-          radius: this.getRadius()
+          radius: this.getRadius(searchQuery.rad)
         });
-        MeetUpCategories[this.state.search.category].fetchP(data=>{
+        MeetUpCategories[searchQuery.cat].fetchP(data=>{
           var meetupArray = parseMeetup(data.data);
           this.setState({
             searchError: '',
@@ -95,6 +98,23 @@ class App extends Component {
         this.setState({searchError: status})
       }
     })
+  }
+
+  callBack(){
+    // this.setState({sidebar: !this.state.sidebar});
+    var searchQuery = {
+      loc: this.state.search.city,
+      rad: this.state.search.radius,
+      cat: this.state.search.category
+    }
+    
+    this.fetchData(searchQuery);
+    var qstr = queryString.stringify({
+      loc: this.state.search.city,
+      rad: this.state.search.radius,
+      cat: this.state.search.category
+    });
+    this.props.history.push('#'+qstr)
   }
   setPlace(){
     if(this.autoComplete.getPlace().formatted_address){
@@ -115,6 +135,16 @@ class App extends Component {
     this.autoComplete.bindTo('bounds', this.map);
     this.autoComplete.addListener('place_changed', this.setPlace);
     this.geocoder = new google.maps.Geocoder();
+    if(this.state.update === true){
+      this.state.update = false;
+      var searchQuery = {
+        loc: this.state.search.city,
+        rad: this.state.search.radius,
+        cat: this.state.search.category
+      }
+      this.fetchData(searchQuery);
+    }
+    this.setState({ loading: false });
   }
   onSearchChange(event){
     this.setState({
@@ -155,12 +185,55 @@ class App extends Component {
     })
   }
   componentDidMount(){
-    setTimeout(() => this.setState({ loading: false }), 1500);
+    if(this.props.history.action === "POP" && this.props.location.hash){
+      var searchQuery = queryString.parse(this.props.location.hash)
+      this.setState({
+        update: true,
+          search: {
+            city: searchQuery.loc,
+            radius: parseInt(searchQuery.rad),
+            category: parseInt(searchQuery.cat)
+          }
+      })
+    }
+  }
+  componentDidUpdate(prevProps, prevState){
+    if(this.props.history.action === "POP" && this.props.location.hash && this.props.location.hash !== prevProps.location.hash && this.geocoder){
+      var searchQuery = queryString.parse(this.props.location.hash)
+      this.setState({
+          search: {
+            city: searchQuery.loc,
+            radius: parseInt(searchQuery.rad),
+            category: parseInt(searchQuery.cat)
+          }
+      })
+      this.fetchData(searchQuery);
+    }
+    else if(this.props.history.action === "POP" && this.props.location.hash && this.props.location.hash !== prevProps.location.hash){
+      var searchQuery = queryString.parse(this.props.location.hash)
+      this.setState({
+        update: true,
+          search: {
+            city: searchQuery.loc,
+            radius: parseInt(searchQuery.rad),
+            category: parseInt(searchQuery.cat)
+          }
+      })
+    }
   }
 
   render() {
     if(this.state.loading){
-      return null;
+      return <GoogleMap
+      center={this.state.center}
+      markers={this.state.events}
+      createServices={this.createServices}
+      getMarkerClick={this.getMarkerClick}
+      getMapClick={this.getMapClick}
+      showingInfoWindow={this.state.showingInfoWindow}
+      activeMarker={this.state.activeEvent}
+      visible={false}
+    />;
     }else{
     return (
       <CSSTransitionGroup
@@ -199,6 +272,7 @@ class App extends Component {
               getMapClick={this.getMapClick}
               showingInfoWindow={this.state.showingInfoWindow}
               activeMarker={this.state.activeEvent}
+              visible={true}
             />
        </div>
        </CSSTransitionGroup>
