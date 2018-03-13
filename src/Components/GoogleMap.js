@@ -17,8 +17,6 @@ export class MapContainer extends Component {
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.state = {
             activeMarker: null,
-            showingInfoWindow: false,
-            num: 0
         }
     }
 onMarkerClick(props, marker, e){
@@ -80,13 +78,9 @@ render() {
         ))}
         <InfoWindow
             marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}>    
-            <div>       
-            {this.state.showingInfoWindow &&
+            visible={this.props.showingInfoWindow}>    
             <div>
                 {this.props.showingInfoWindow && <InfoDisplay event={this.props.markers[this.props.activeMarker]} />}
-            </div>
-            }
             </div>
         </ InfoWindow>
       </Map>
