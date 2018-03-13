@@ -1,13 +1,21 @@
-.wrapper{
-    display:flex;
+.wrapper {
+    display: flex;
     flex-flow: row wrap;
     justify-content: flex-end;
     width: 100%;
 }
-.navBar{
+
+.navBar {
     display: inline-block !important;
     width: 100% !important;
 }
-.sideListCSS{
-    width: 30%;
+
+.tunnelIn-appear {
+    opacity: 0;
+}
+
+
+.tunnelIn-appear.tunnelIn-appear-active {
+    opacity: 1;
+    transition: opacity 2s ease-in-out;
 }

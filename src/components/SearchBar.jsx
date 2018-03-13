@@ -5,7 +5,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import TextField from 'material-ui/TextField';
 //for inline styles
-import {orange600, grey700} from 'material-ui/styles/colors'
 import {white} from 'material-ui/styles/colors'
 
 
@@ -51,10 +50,9 @@ import {white} from 'material-ui/styles/colors'
                     labelStyle = {{lineHeight: '50px', fontSize: 20}}
                     listStyle = {{paddingTop: 10, paddingBottom: 10}}
                 >
-                    <MenuItem style = {{fontSize: 20}} value={1} primaryText="5 miles"/>
-                    <MenuItem style = {{fontSize: 20}} value={2} primaryText="10 miles"/>
-                    <MenuItem style = {{fontSize: 20}} value={3} primaryText="25 miles"/>
-                    <MenuItem style = {{fontSize: 20}} value={4} primaryText="50 miles"/>
+                    <MenuItem style = {{fontSize: 20}} value={1} primaryText="10 miles"/>
+                    <MenuItem style = {{fontSize: 20}} value={2} primaryText="25 miles"/>
+                    <MenuItem style = {{fontSize: 20}} value={3} primaryText="50 miles"/>
 
                 </DropDownMenu>
 

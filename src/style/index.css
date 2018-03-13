@@ -2,8 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
-  /* background: url("../img/map.png"); */
-  background: teal;
+  background: #757575;
 }
 html,
 body{
@@ -18,7 +17,7 @@ body{
   display: none;
 }
 .loader{
-  position: absolute;
+  position: fixed;
   display: block;
   left: 45%;
   top: 45%;
@@ -32,9 +31,9 @@ body{
   -webkit-animation: pulse 1s ease-in-out infinite;
 }
 .logo{
-  position: absolute;
-  top: 40%;
-  left:10%;
+  position: fixed;
+  top: 51.3%;
+  left:46%;
   font-size: 20px;
   font-weight: bolder;
   color: #ffffff;

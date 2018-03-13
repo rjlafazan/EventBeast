@@ -7,9 +7,11 @@
     "gh-pages": "^1.1.0",
     "material-ui": "^0.20.0",
     "react": "^16.2.0",
+    "react-css-transition": "^0.7.4",
     "react-dom": "^16.2.0",
     "react-pure-grid": "^2.1.1",
-    "react-scripts": "1.1.1"
+    "react-scripts": "1.1.1",
+    "react-transition-group": "^1.2.1"
   },
   "scripts": {
     "start": "react-scripts start",

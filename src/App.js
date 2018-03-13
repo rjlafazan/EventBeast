@@ -6,6 +6,7 @@ import NewZIndex from './style/NewZIndex'
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './style/App.css';
+import {CSSTransitionGroup} from 'react-transition-group'; // ES6//entering animation
 //Components
 import Nav from './components/NavBar'
 import SearchBar from "./components/SearchBar"
@@ -37,17 +38,25 @@ class App extends Component {
       return null;
     }
     return (
+      <CSSTransitionGroup
+      transitionName = "tunnelIn"
+      transitionAppear={true}
+      transitionAppearTimeout={2000}
+      transitionEnter={false}
+      transitionLeave={false}>
       <div className = 'wrapper'>
         <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
           <Nav className = 'navBar'/>
           </MuiThemeProvider>
+
+          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
+          <SearchBar categories = {this.state.eventCategories} callback = {this.callBack}/>
+          </MuiThemeProvider>
           <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
           <SideBar openClose = {this.state.sidebar}/>
           </MuiThemeProvider>
-          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
-          <SearchBar className = "searchBar" categories = {this.state.eventCategories} callback = {this.callBack}/>
-          </MuiThemeProvider>
        </div>
+       </CSSTransitionGroup>
     );
   }
 }
