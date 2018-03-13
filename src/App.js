@@ -323,7 +323,6 @@ class App extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState){
-    console.log(this.props);
     if(this.state.redirect.yes){
       this.setState({
         redirect: {
