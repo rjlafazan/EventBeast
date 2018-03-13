@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
-// import update from 'react-addons-update'; // ES6
-import { render } from 'react-dom';
-=======
 import {render} from 'react-dom';
 import queryString from 'query-string'
-<<<<<<< HEAD
->>>>>>> added routing
-=======
 import {Redirect} from 'react-router-dom'
->>>>>>> changed routing
 //Theme and styling
 import BeastTheme from './style/BeastTheme';
 import NewZIndex from './style/NewZIndex';
@@ -35,13 +27,8 @@ import MeetUpApi, {parseMeetup, categories, MeetUpCategories} from './api/MeetUp
 import firebase, {eventRef, uid} from './utils/Firebase'
 
 class App extends Component {
-<<<<<<< HEAD
-  constructor() {
-    super();
-=======
   constructor(props){
     super(props);
->>>>>>> added routing
     this.state = {
       eventCategories: [],
       events: [],
@@ -52,14 +39,6 @@ class App extends Component {
         lat: 38.58011,
         lng: -121.487503,
       },
-<<<<<<< HEAD
-      currentSelection: {
-        name: '',
-        id: '',
-        description: '',
-      },
-=======
->>>>>>> removed unnecessary states
       search: {
         city: '',
         radius: 1,
@@ -84,13 +63,8 @@ class App extends Component {
     this.getMarkerClick = this.getMarkerClick.bind(this);
     this.getMapClick = this.getMapClick.bind(this);
   }
-<<<<<<< HEAD
-  getRadius() {
-    switch (this.state.search.radius) {
-=======
   getRadius(rad){
     switch(rad){
->>>>>>> added routing
       case 1:
         return 10;
       case 2:
@@ -137,10 +111,6 @@ class App extends Component {
       }
     });
   }
-<<<<<<< HEAD
-  setPlace() {
-    if (this.autoComplete.getPlace().formatted_address) {
-=======
 
   callBack(){
     // this.setState({sidebar: !this.state.sidebar});
@@ -166,7 +136,6 @@ class App extends Component {
   }
   setPlace(){
     if(this.autoComplete.getPlace().formatted_address){
->>>>>>> added routing
       this.setState({
         search: {
           city: this.autoComplete.getPlace().formatted_address,
@@ -224,7 +193,6 @@ class App extends Component {
       },
     });
   }
-<<<<<<< HEAD
   getMarkerClick(marker) {
     //get weather data for the event clicked append to clicked event and return
     var meets = this.state.events.slice(0);
@@ -232,9 +200,6 @@ class App extends Component {
     // console.log(meetWithWeather);
     meets[marker.activeMarker] = meetWithWeather;
 
-=======
-  getMarkerClick(marker){
->>>>>>> moved like information to map
     this.setState({
       events: meets,
       activeEvent: marker.activeMarker,
@@ -246,72 +211,10 @@ class App extends Component {
       showingInfoWindow: false,
     });
   }
-<<<<<<< HEAD
-  componentDidMount() {
-=======
-  componentDidMount(){
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    document.addEventListener("click", event=>{
-      if(event.target.id === 'like'){
-        var eventID = this.state.events[this.state.activeEvent].id;
-        var currentRef = eventRef.child(eventID);
-        currentRef.set({
-          likes: this.state.eventLikes + 1
-        })
-        currentRef.child(uid).set(true);
-      }
-    })
->>>>>>> moved code
-=======
->>>>>>> moved like information to map
-    setTimeout(() => this.setState({ loading: false }), 1500);
-  }
 
-  render() {
-    if (this.state.loading) {
-      return null;
-<<<<<<< HEAD
-    } else {
-      return (
-        <CSSTransitionGroup
-          transitionName="tunnelIn"
-          transitionAppear={true}
-          transitionAppearTimeout={2000}
-          transitionEnter={false}
-          transitionLeave={false}
-        >
-          <div className="wrapper">
-            <MuiThemeProvider muiTheme={getMuiTheme(BeastTheme)}>
-              <Nav className="navBar" />
-            </MuiThemeProvider>
-            <MuiThemeProvider muiTheme={getMuiTheme(BeastTheme, NewZIndex)}>
-              <SideBar
-                openClose={this.state.sidebar}
-                events={this.state.events}
-              />
-            </MuiThemeProvider>
-            <MuiThemeProvider muiTheme={getMuiTheme(BeastTheme, NewZIndex)}>
-              <SearchBar
-                categories={this.state.eventCategories}
-                callback={this.callBack}
-                onSearchChange={this.onSearchChange}
-                onCategoryChange={this.onCategoryChange}
-                onRadiusChange={this.onRadiusChange}
-                search={this.state.search}
-                searchError={this.state.searchError}
-                categories={categories}
-              />
-            </MuiThemeProvider>
-=======
-=======
-    if(this.props.history.action === "POP" && this.props.location.hash){
-      var searchQuery = queryString.parse(this.props.location.hash)
-=======
+  componentDidMount(){
     if(this.props.history.action === "POP" && this.props.location.search){
       var searchQuery = queryString.parse(this.props.location.search)
->>>>>>> changed routing
       this.setState({
         update: true,
           search: {
@@ -356,6 +259,7 @@ class App extends Component {
     }
   }
 
+
   render() {
     if(this.state.loading){
       return (
@@ -368,15 +272,9 @@ class App extends Component {
       showingInfoWindow={this.state.showingInfoWindow}
       activeMarker={this.state.activeEvent}
       visible={false}
-<<<<<<< HEAD
-    />;
->>>>>>> added routing
-    }else{
-=======
     />);
     }
     else{
->>>>>>> changed routing
     return (
       <CSSTransitionGroup
       transitionName = "tunnelIn"
@@ -406,7 +304,6 @@ class App extends Component {
             categories={categories}
           />
           </MuiThemeProvider>
->>>>>>> added collapsable infowindow
             <GoogleMap
               center={this.state.center}
               markers={this.state.events}
@@ -417,19 +314,10 @@ class App extends Component {
               activeMarker={this.state.activeEvent}
               visible={true}
             />
-<<<<<<< HEAD
           </div>
         </CSSTransitionGroup>
       );
     }
-=======
-            {this.state.redirect.yes && <Redirect push to={this.state.redirect} />}
-       </div>
-       </CSSTransitionGroup>
-      
-    );
-  }
->>>>>>> changed routing
   }
 }
 
