@@ -91,7 +91,8 @@ class App extends Component {
           this.setState({
             searchError: '',
             events: meetupArray,
-            showingInfoWindow: false
+            showingInfoWindow: false,
+            activeEvent: null
           })
         });
       }
@@ -186,7 +187,6 @@ class App extends Component {
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
           <SearchBar
-            categories={this.state.eventCategories} 
             callback={this.callBack}
             onSearchChange={this.onSearchChange}
             onCategoryChange={this.onCategoryChange}
