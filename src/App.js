@@ -157,7 +157,7 @@ class App extends Component {
   }
   getMarkerClick(marker) {
     //get weather data for the event clicked append to clicked event and return
-    var meets = this.state.events;
+    var meets = this.state.events.slice(0);
     var meetWithWeather = getWeatherData(meets[marker.activeMarker]);
     // console.log(meetWithWeather);
     meets[marker.activeMarker] = meetWithWeather;
