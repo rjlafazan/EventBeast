@@ -16,7 +16,6 @@
     "react-pure-grid": "^2.1.1",
     "react-scripts": "1.1.1",
     "uuid": "^3.2.1",
-    "react-pure-grid": "^2.1.1",
     "moment": "^2.21.0",
     "dark-sky-api": "^0.6.21"
   },
