@@ -43,8 +43,6 @@ class App extends Component {
       },
       searchError: '',
       showingInfoWindow: false,
-      eventLikes: 0,
-      canLike: true
     }
     this.callBack = this.callBack.bind(this);
     this.createServices = this.createServices.bind(this);
@@ -150,34 +148,9 @@ class App extends Component {
     })
   }
   getMarkerClick(marker){
-    if(this.state.activeEvent){
-      var eventID = this.state.events[this.state.activeEvent].id;
-      var currentRef = eventRef.child(eventID);
-      currentRef.off();
-    }
     this.setState({
       activeEvent: marker.activeMarker,
       showingInfoWindow: true
-    })
-    var eventID = this.state.events[this.state.activeEvent].id;
-    var currentRef = eventRef.child(eventID);
-    var canLike = true;
-    currentRef.on('value', snapshot=>{
-      if(snapshot.val()){
-        if(snapshot.val()[uid]){
-          canLike = false;
-        }
-        this.setState({
-          eventLikes: snapshot.val().likes,
-          canLike: canLike
-        })
-      }
-      else{
-        this.setState({
-          eventLikes: 0,
-          canLike: canLike
-        })
-      }
     })
   }
   getMapClick(){
@@ -186,16 +159,6 @@ class App extends Component {
     })
   }
   componentDidMount(){
-    document.addEventListener("click", event=>{
-      if(event.target.id === 'like'){
-        var eventID = this.state.events[this.state.activeEvent].id;
-        var currentRef = eventRef.child(eventID);
-        currentRef.set({
-          likes: this.state.eventLikes + 1
-        })
-        currentRef.child(uid).set(true);
-      }
-    })
     setTimeout(() => this.setState({ loading: false }), 1500);
   }
 
@@ -242,8 +205,6 @@ class App extends Component {
               getMapClick={this.getMapClick}
               showingInfoWindow={this.state.showingInfoWindow}
               activeMarker={this.state.activeEvent}
-              eventLikes={this.state.eventLikes}
-              canLike={this.state.canLike}
             />
        </div>
        </CSSTransitionGroup>

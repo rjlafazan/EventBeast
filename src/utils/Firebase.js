@@ -23,7 +23,6 @@ if (user) {
     // User is signed in.
     var isAnonymous = user.isAnonymous;
     uid = user.uid;
-    console.log(uid);
     // ...
 } else {
     // User is signed out.
