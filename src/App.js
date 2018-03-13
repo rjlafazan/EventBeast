@@ -130,16 +130,6 @@ class App extends Component {
     this.autoComplete.bindTo('bounds', this.map);
     this.autoComplete.addListener('place_changed', this.setPlace);
     this.geocoder = new google.maps.Geocoder();
-    document.addEventListener("click", event=>{
-      if(event.target.id === 'like'){
-        var eventID = this.state.events[this.state.activeEvent].id;
-        var currentRef = eventRef.child(eventID);
-        currentRef.set({
-          likes: this.state.eventLikes + 1
-        })
-        currentRef.child(uid).set(true);
-      }
-    })
   }
   onSearchChange(event) {
     this.setState({
@@ -206,7 +196,21 @@ class App extends Component {
       showingInfoWindow: false,
     });
   }
+<<<<<<< HEAD
   componentDidMount() {
+=======
+  componentDidMount(){
+    document.addEventListener("click", event=>{
+      if(event.target.id === 'like'){
+        var eventID = this.state.events[this.state.activeEvent].id;
+        var currentRef = eventRef.child(eventID);
+        currentRef.set({
+          likes: this.state.eventLikes + 1
+        })
+        currentRef.child(uid).set(true);
+      }
+    })
+>>>>>>> moved code
     setTimeout(() => this.setState({ loading: false }), 1500);
   }
 
