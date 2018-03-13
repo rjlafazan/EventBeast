@@ -38,11 +38,14 @@ class App extends Component {
         lat: 38.58011,
         lng: -121.487503,
       },
+<<<<<<< HEAD
       currentSelection: {
         name: '',
         id: '',
         description: '',
       },
+=======
+>>>>>>> removed unnecessary states
       search: {
         city: '',
         radius: 1,
@@ -270,7 +273,6 @@ class App extends Component {
             <GoogleMap
               center={this.state.center}
               markers={this.state.events}
-              currentSelection={this.state.currentSelection}
               createServices={this.createServices}
               getMarkerClick={this.getMarkerClick}
               getMapClick={this.getMapClick}
