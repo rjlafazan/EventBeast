@@ -66,12 +66,14 @@ import {white} from 'material-ui/styles/colors'
                 onChange={this.props.onCategoryChange}
                 labelStyle={{lineHeight: '50px', fontSize: 20}}
                 listStyle = {{paddingTop: 10, paddingBottom:10}}
+                animated={true}
                 >
                     <MenuItem style = {{fontSize: 20}} value={0} primaryText="All Categories"/>
                     {this.props.categories.map((category, index)=>
                         <MenuItem
                         value={index + 1} primaryText = {category.name}
-                        style={{fontSize: 20}}/>)}
+                        style={{fontSize: 20}}
+                        key = {index}/>)}
 
                 </DropDownMenu>
                 </ToolbarGroup>

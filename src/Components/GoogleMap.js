@@ -67,6 +67,7 @@ render() {
         >
 
         {this.props.markers.map( (marker, index) => 
+        
             <Marker 
                 onClick={this.onMarkerClick}
                 num={index}
@@ -75,7 +76,7 @@ render() {
                 position={{lat: marker.lat, lng: marker.lng}} 
                 key={marker.key} 
                 description={marker.description}
-                
+                icon = {'https://image.ibb.co/kNOH5H/marker.png'}
             />
         )}
         <InfoWindow

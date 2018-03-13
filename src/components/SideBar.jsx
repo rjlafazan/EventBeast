@@ -2,7 +2,6 @@ import React from 'react';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import MenuItem from 'material-ui/MenuItem';
-import MenuCard from "./MenuCard"
 
 
 export default class SideBar extends React.Component {
@@ -15,11 +14,11 @@ export default class SideBar extends React.Component {
 
   render() {
     return (
-      <Drawer width = {300} open={true}>
+      <Drawer width = {400}>
 
         <AppBar title="Available Events:"/>
-        {this.props.events.map((event,index)=>
-          <MenuItem key = {event.id} primaryText = {event.title}/>)}
+        {this.props.events.map((event)=>
+          <MenuItem key = {event.id} primaryText = {event.name}/>)}
       </Drawer>
     );
 
