@@ -8,9 +8,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './style/App.css';
 import {CSSTransitionGroup} from 'react-transition-group'; // ES6//entering animation
 //Components
-import Nav from './components/NavBar'
-import SearchBar from "./components/SearchBar"
-import SideBar from './components/SideBar'
+import Nav from './Components/NavBar'
+import SearchBar from "./Components/SearchBar"
+import SideBar from './Components/SideBar'
 import GoogleMap from './Components/GoogleMap'
 
 //API
@@ -22,6 +22,7 @@ class App extends Component {
     this.state = {
       eventCategories: [],
       events: [],
+      loading: true,
       activeEvent: null,
       sidebar: false,
       center: {
@@ -51,15 +52,11 @@ class App extends Component {
   getRadius(){
     switch(this.state.search.radius){
       case 1:
-        return 5;
-      case 2:
         return 10;
-      case 3:
+      case 2:
         return 25;
-      case 4:
+      case 3:
         return 50;
-      case 5:
-        return 100;
     }
   }
   milesToMeters(miles){
@@ -149,11 +146,14 @@ class App extends Component {
       activeEvent: marker.activeMarker
     })
   }
+  componentDidMount(){
+    setTimeout(() => this.setState({ loading: false }), 1500);
+  }
 
   render() {
     if(this.state.loading){
       return null;
-    }
+    }else{
     return (
       <CSSTransitionGroup
       transitionName = "tunnelIn"
@@ -161,19 +161,19 @@ class App extends Component {
       transitionAppearTimeout={2000}
       transitionEnter={false}
       transitionLeave={false}>
+
       <div className = 'wrapper'>
         <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
           <Nav className = 'navBar'/>
           </MuiThemeProvider>
-          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
+          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
           <SideBar 
             openClose={this.state.sidebar}
             events={this.state.events}
           />
           </MuiThemeProvider>
-          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
-          <SearchBar 
-            className="searchBar" 
+          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
+          <SearchBar
             categories={this.state.eventCategories} 
             callback={this.callBack}
             onSearchChange={this.onSearchChange}
@@ -183,7 +183,6 @@ class App extends Component {
             searchError={this.state.searchError}
           />
           </MuiThemeProvider>
-          <div>
             <GoogleMap
               center={this.state.center}
               markers={this.state.events}
@@ -191,11 +190,11 @@ class App extends Component {
               createServices={this.createServices}
               getMarkerClick={this.getMarkerClick}
             />
-          </div>
        </div>
        </CSSTransitionGroup>
       
     );
+  }
   }
 }
 
