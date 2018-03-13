@@ -5,7 +5,11 @@ import { render } from 'react-dom';
 =======
 import {render} from 'react-dom';
 import queryString from 'query-string'
+<<<<<<< HEAD
 >>>>>>> added routing
+=======
+import {Redirect} from 'react-router-dom'
+>>>>>>> changed routing
 //Theme and styling
 import BeastTheme from './style/BeastTheme';
 import NewZIndex from './style/NewZIndex';
@@ -63,7 +67,12 @@ class App extends Component {
       },
       searchError: '',
       showingInfoWindow: false,
-      update: false
+      update: false,
+      redirect: {
+        yes: false,
+        pathname: '',
+        search: ''
+      }
     }
     this.fetchData = this.fetchData.bind(this);
     this.callBack = this.callBack.bind(this);
@@ -147,7 +156,13 @@ class App extends Component {
       rad: this.state.search.radius,
       cat: this.state.search.category
     });
-    this.props.history.push('#'+qstr)
+    this.setState({
+      redirect: {
+        yes: true,
+        pathname: '/',
+        search: qstr,
+      }
+    })
   }
   setPlace(){
     if(this.autoComplete.getPlace().formatted_address){
@@ -237,6 +252,7 @@ class App extends Component {
   componentDidMount(){
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     document.addEventListener("click", event=>{
       if(event.target.id === 'like'){
         var eventID = this.state.events[this.state.activeEvent].id;
@@ -292,6 +308,10 @@ class App extends Component {
 =======
     if(this.props.history.action === "POP" && this.props.location.hash){
       var searchQuery = queryString.parse(this.props.location.hash)
+=======
+    if(this.props.history.action === "POP" && this.props.location.search){
+      var searchQuery = queryString.parse(this.props.location.search)
+>>>>>>> changed routing
       this.setState({
         update: true,
           search: {
@@ -303,8 +323,18 @@ class App extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState){
-    if(this.props.history.action === "POP" && this.props.location.hash && this.props.location.hash !== prevProps.location.hash && this.geocoder){
-      var searchQuery = queryString.parse(this.props.location.hash)
+    console.log(this.props);
+    if(this.state.redirect.yes){
+      this.setState({
+        redirect: {
+          yes: false,
+          pathname: this.state.redirect.pathname,
+          search: this.state.redirect.search
+        }
+      })
+    }
+    if(this.props.history.action === "POP" && this.props.location.search && this.props.location.search !== prevProps.location.search && this.geocoder){
+      var searchQuery = queryString.parse(this.props.location.search)
       this.setState({
           search: {
             city: searchQuery.loc,
@@ -314,8 +344,8 @@ class App extends Component {
       })
       this.fetchData(searchQuery);
     }
-    else if(this.props.history.action === "POP" && this.props.location.hash && this.props.location.hash !== prevProps.location.hash){
-      var searchQuery = queryString.parse(this.props.location.hash)
+    else if(this.props.history.action === "POP" && this.props.location.search && this.props.location.search !== prevProps.location.search){
+      var searchQuery = queryString.parse(this.props.location.search)
       this.setState({
         update: true,
           search: {
@@ -329,7 +359,8 @@ class App extends Component {
 
   render() {
     if(this.state.loading){
-      return <GoogleMap
+      return (
+      <GoogleMap
       center={this.state.center}
       markers={this.state.events}
       createServices={this.createServices}
@@ -338,9 +369,15 @@ class App extends Component {
       showingInfoWindow={this.state.showingInfoWindow}
       activeMarker={this.state.activeEvent}
       visible={false}
+<<<<<<< HEAD
     />;
 >>>>>>> added routing
     }else{
+=======
+    />);
+    }
+    else{
+>>>>>>> changed routing
     return (
       <CSSTransitionGroup
       transitionName = "tunnelIn"
@@ -381,10 +418,19 @@ class App extends Component {
               activeMarker={this.state.activeEvent}
               visible={true}
             />
+<<<<<<< HEAD
           </div>
         </CSSTransitionGroup>
       );
     }
+=======
+            {this.state.redirect.yes && <Redirect push to={this.state.redirect} />}
+       </div>
+       </CSSTransitionGroup>
+      
+    );
+  }
+>>>>>>> changed routing
   }
 }
 
