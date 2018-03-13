@@ -137,6 +137,23 @@ class App extends Component {
       })
     }
   }
+
+  callBack(){
+    // this.setState({sidebar: !this.state.sidebar});
+    var searchQuery = {
+      loc: this.state.search.city,
+      rad: this.state.search.radius,
+      cat: this.state.search.category
+    }
+    
+    this.fetchData(searchQuery);
+    var qstr = queryString.stringify({
+      loc: this.state.search.city,
+      rad: this.state.search.radius,
+      cat: this.state.search.category
+    });
+    this.props.history.push('#'+qstr)
+  }
   setPlace(){
     if(this.autoComplete.getPlace().formatted_address){
       this.setState({
