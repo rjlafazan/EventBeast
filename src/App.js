@@ -45,7 +45,7 @@ class App extends Component {
       update: false,
       redirect: {
         yes: false,
-        pathname: '/project1',
+        pathname: '/project1/',
         search: ''
       }
     }
@@ -127,13 +127,11 @@ class App extends Component {
     });
 
     var qstrcmp = "?"+qstr;
-    console.log(qstrcmp);
-    console.log(qstrcmp.localeCompare(this.props.location.search))
     if(qstrcmp.localeCompare(this.props.location.search) !== 0){
       this.setState({
         redirect: {
           yes: true,
-          pathname: '/project1',
+          pathname: '/project1/',
           search: qstr,
         }
       })
