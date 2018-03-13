@@ -8,26 +8,29 @@ export default class AjaxRequest {
         this.url = this.baseUrl;
         this.params = {};
     }
-    setParam(params){
-        this.params = params;
+    buildUrl(){
+        var paramString = '';
+        if(this.baseUrl.indexOf('?') === -1){
+            paramString = '?'
+        }
+        else if(this.baseUrl[this.baseUrl.length - 1] !== '&'){
+            paramString = '&'
+        }
         var keys = Object.keys(this.params);
         var values = Object.values(this.params);
-        var paramString = '?';
         for(let i = 0; i < keys.length; i++){
             paramString += keys[i] + '=' + values[i] + '&';
         }
         this.url = this.baseUrl + paramString;
+    }
+    setParam(params){
+        this.params = params;
+        this.buildUrl();
         return this;
     }
     updateParam(newParams){
         this.params = Object.assign(this.params, newParams);
-        var keys = Object.keys(this.params);
-        var values = Object.values(this.params);
-        var paramString = '?';
-        for(let i = 0; i < keys.length; i++){
-            paramString += keys[i] + '=' + values[i] + '&';
-        }
-        this.url = this.baseUrl + paramString;
+        this.buildUrl();
     }
     setCallBack(callback){
         this.callback = callback;

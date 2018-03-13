@@ -14,7 +14,7 @@ import SideBar from './Components/SideBar'
 import GoogleMap from './Components/GoogleMap'
 
 //API
-import MeetUpApi, {parseMeetup} from './api/MeetUpAPI'
+import MeetUpApi, {parseMeetup, categories, MeetUpCategories} from './api/MeetUpAPI'
 
 class App extends Component {
   constructor(){
@@ -37,9 +37,10 @@ class App extends Component {
       search: {
         city: '',
         radius: 1,
-        category: 1
+        category: 0
       },
-      searchError: ''
+      searchError: '',
+      showingInfoWindow: false
     }
     this.callBack = this.callBack.bind(this);
     this.createServices = this.createServices.bind(this);
@@ -48,6 +49,7 @@ class App extends Component {
     this.onRadiusChange = this.onRadiusChange.bind(this);
     this.setPlace = this.setPlace.bind(this);
     this.getMarkerClick = this.getMarkerClick.bind(this);
+    this.getMapClick = this.getMapClick.bind(this);
   }
   getRadius(){
     switch(this.state.search.radius){
@@ -77,16 +79,17 @@ class App extends Component {
         };
         var circle = new this.google.maps.Circle(circleOptions);
         this.map.fitBounds(circle.getBounds());
-        MeetUpApi.updateParam({
+        MeetUpCategories[this.state.search.category].updateParam({
           lat: lat,
           lon: lng,
           radius: this.getRadius()
         });
-        MeetUpApi.fetchP(data=>{
+        MeetUpCategories[this.state.search.category].fetchP(data=>{
           var meetupArray = parseMeetup(data.data);
           this.setState({
             searchError: '',
-            events: meetupArray
+            events: meetupArray,
+            showingInfoWindow: false
           })
         });
       }
@@ -111,6 +114,7 @@ class App extends Component {
     this.google = google;
     this.map = map;
     this.autoComplete = new google.maps.places.Autocomplete(document.getElementById('citySearchField'));
+    this.autoComplete.bindTo('bounds', this.map);
     this.autoComplete.addListener('place_changed', this.setPlace);
     this.geocoder = new google.maps.Geocoder();
   }
@@ -143,7 +147,13 @@ class App extends Component {
   }
   getMarkerClick(marker){
     this.setState({
-      activeEvent: marker.activeMarker
+      activeEvent: marker.activeMarker,
+      showingInfoWindow: true
+    })
+  }
+  getMapClick(){
+    this.setState({
+      showingInfoWindow: false
     })
   }
   componentDidMount(){
@@ -181,6 +191,7 @@ class App extends Component {
             onRadiusChange={this.onRadiusChange}
             search={this.state.search}
             searchError={this.state.searchError}
+            categories={categories}
           />
           </MuiThemeProvider>
             <GoogleMap
@@ -189,6 +200,9 @@ class App extends Component {
               currentSelection={this.state.currentSelection}
               createServices={this.createServices}
               getMarkerClick={this.getMarkerClick}
+              getMapClick={this.getMapClick}
+              showingInfoWindow={this.state.showingInfoWindow}
+              activeMarker={this.state.activeEvent}
             />
        </div>
        </CSSTransitionGroup>
