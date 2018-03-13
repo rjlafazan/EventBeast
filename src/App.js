@@ -124,13 +124,18 @@ class App extends Component {
       rad: this.state.search.radius,
       cat: this.state.search.category
     });
-    this.setState({
-      redirect: {
-        yes: true,
-        pathname: '/',
-        search: qstr,
-      }
-    })
+
+    var qstrcmp = "?"+qstr;
+
+    if(qstrcmp.localeCompare(this.props.location.search) !== 0){
+      this.setState({
+        redirect: {
+          yes: true,
+          pathname: '/',
+          search: qstr,
+        }
+      })
+    }
   }
   setPlace(){
     if(this.autoComplete.getPlace().formatted_address){
