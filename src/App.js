@@ -35,7 +35,8 @@ class App extends Component {
         radius: 1,
         category: 0
       },
-      searchError: ''
+      searchError: '',
+      showingInfoWindow: false
     }
     this.callBack = this.callBack.bind(this);
     this.createServices = this.createServices.bind(this);
@@ -44,6 +45,7 @@ class App extends Component {
     this.onRadiusChange = this.onRadiusChange.bind(this);
     this.setPlace = this.setPlace.bind(this);
     this.getMarkerClick = this.getMarkerClick.bind(this);
+    this.getMapClick = this.getMapClick.bind(this);
   }
   getRadius(){
     switch(this.state.search.radius){
@@ -86,7 +88,8 @@ class App extends Component {
           var meetupArray = parseMeetup(data.data);
           this.setState({
             searchError: '',
-            events: meetupArray
+            events: meetupArray,
+            showingInfoWindow: false
           })
         });
       }
@@ -144,7 +147,13 @@ class App extends Component {
   }
   getMarkerClick(marker){
     this.setState({
-      activeEvent: marker.activeMarker
+      activeEvent: marker.activeMarker,
+      showingInfoWindow: true
+    })
+  }
+  getMapClick(){
+    this.setState({
+      showingInfoWindow: false
     })
   }
 
@@ -180,6 +189,9 @@ class App extends Component {
               currentSelection={this.state.currentSelection}
               createServices={this.createServices}
               getMarkerClick={this.getMarkerClick}
+              getMapClick={this.getMapClick}
+              showingInfoWindow={this.state.showingInfoWindow}
+              activeMarker={this.state.activeEvent}
             />
           </div>
        </div>
