@@ -15,13 +15,13 @@ var params = {
   eventEndTime: moment('2018-03-15 18:00', 'YYYY-MM-DD HH:MM'),
 };
 
-export function getWeatherData(meet) {
+export function getWeatherData(meet, callback) {
   // console.log(meet);
 
   //if weather data exsists
-  if (meet.weather) {
-    return meet;
-  }
+  // if (meet.weather) {
+  //   return meet;
+  // }
 
   var pos = {
     latitude: meet.lat,
@@ -67,6 +67,7 @@ export function getWeatherData(meet) {
         weather.hourly = hourly;
       }
       // console.log(weather);
+      callback(weather);
       //   return array;
       meet.weather = weather;
       // console.log(meet);

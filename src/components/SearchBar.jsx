@@ -76,24 +76,7 @@ import {white} from 'material-ui/styles/colors'
                         style={{fontSize: 20}}/>)}
 
                 </DropDownMenu>
-<<<<<<< HEAD
-=======
-                <ToolbarTitle text="within" />
-                <DropDownMenu value={this.props.search.radius} onChange={this.props.onRadiusChange}>
-                        <MenuItem value={1} primaryText="5 miles"/>
-                        <MenuItem value={2} primaryText="10 miles"/>
-                        <MenuItem value={3} primaryText="25 miles"/>
-                        <MenuItem value={4} primaryText="50 miles"/>
-                        <MenuItem value={5} primaryText="100 miles"/>
-                    </DropDownMenu>
-                    <ToolbarTitle text="in" />
-                    <DropDownMenu value={this.props.search.category} onChange={this.props.onCategoryChange}>
-                    <MenuItem value={0} primaryText="All Categories" />
-                    {this.props.categories.map((category, index)=><MenuItem value={index+1} primaryText={category.name} key={category.id}/>)}
-                    </DropDownMenu>
->>>>>>> categories working
-=======
->>>>>>> resolve merge conflicts
+
                 </ToolbarGroup>
 
                 <ToolbarGroup lastChild = {true}>

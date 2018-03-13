@@ -10,7 +10,9 @@ import PropTypes from 'prop-types';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import InfoDisplay from './InfoDisplay'
 //Firebase
-import firebase, {eventRef, uid} from '../utils/Firebase'
+import {eventRef, uid} from '../utils/Firebase'
+//API
+import { getWeatherData } from '../api/DarkSkyApi';
 
 export class MapContainer extends Component {
     constructor(props){
@@ -21,18 +23,30 @@ export class MapContainer extends Component {
             activeMarker: null,
             eventLikes: 0,
             canLike: true,
-            collapse: true
+            collapse: true,
+            weather: null
         }
+        this.getWeather = this.getWeather.bind(this);
     }
+    
+getWeather(data){
+    this.setState({weather: data})
+}
 onMarkerClick(props, marker, e){
+    //get weather data for the event clicked 
+    getWeatherData(this.props.markers[props.num], this.getWeather);
+
+    var eventID;
+    var currentRef;
+
     var canLike = true;
     if(this.props.activeMarker){
-        var eventID = this.props.markers[this.props.activeMarker].id;
-        var currentRef = eventRef.child(eventID);
+        eventID = this.props.markers[this.props.activeMarker].id;
+        currentRef = eventRef.child(eventID);
         currentRef.off();
       }
-    var eventID = this.props.markers[props.num].id;
-    var currentRef = eventRef.child(eventID);
+    eventID = this.props.markers[props.num].id;
+    currentRef = eventRef.child(eventID);
     currentRef.on('value', snapshot=>{
         if(snapshot.val()){
             if(snapshot.val()[uid]){
@@ -55,7 +69,8 @@ onMarkerClick(props, marker, e){
     });
     this.setState({
         activeMarker: marker,
-        collapse: true
+        collapse: true,
+        // weather: meetWithWeather
     })
 }
 onMapClick(mapProps, map, clickEvent){
@@ -68,7 +83,8 @@ onMapClick(mapProps, map, clickEvent){
 }
 shouldComponentUpdate(nextProps, nextState){
     if(this.state === nextState && 
-        this.props.showingInfoWindow === this.props.showingInfoWindow &&
+        this.props.showingInfoWindow === nextProps.showingInfoWindow &&
+        this.props.activeMarker === nextProps.activeMarker &&
         this.props.eventLikes === nextProps.eventLikes &&
         this.props.canLike === nextProps.canLike &&
         this.props.markers === nextProps.markers && 
@@ -78,21 +94,26 @@ shouldComponentUpdate(nextProps, nextState){
     return true;
 }
 componentDidMount(){
-    document.addEventListener("click", event=>{
-      if(event.target.id === 'like'){
-        var eventID = this.props.markers[this.props.activeMarker].id;
-        var currentRef = eventRef.child(eventID);
-        currentRef.set({
-          likes: this.state.eventLikes + 1
+    // console.log('map mounted');
+    if(this.props.visible){
+        // console.log('map mounted visible');
+        document.addEventListener("click", event=>{
+          if(event.target.id === 'like'){
+              console.log(this.props);
+            var eventID = this.props.markers[this.props.activeMarker].id;
+            var currentRef = eventRef.child(eventID);
+            currentRef.set({
+              likes: this.state.eventLikes + 1
+            })
+            currentRef.child(uid).set(true);
+          }
+          else if(event.target.id === 'collapse'){
+              this.setState({
+                  collapse: !this.state.collapse
+              })
+          }
         })
-        currentRef.child(uid).set(true);
-      }
-      else if(event.target.id === 'collapse'){
-          this.setState({
-              collapse: !this.state.collapse
-          })
-      }
-    })
+    }
   }
 render() {
     const style = {
@@ -136,6 +157,7 @@ render() {
                     canLike={this.state.canLike} 
                     eventLikes={this.state.eventLikes} 
                     event={this.props.markers[this.props.activeMarker]} 
+                    weather={this.state.weather}
                 />}
             </div>
         </ InfoWindow>
@@ -154,7 +176,6 @@ MapContainer.propTypes = {
     markers: PropTypes.array,
     getMarkerClick: PropTypes.func,
     createServices: PropTypes.func,
-    getMarkerClick: PropTypes.func,
 }
 
 export default GoogleApiWrapper({

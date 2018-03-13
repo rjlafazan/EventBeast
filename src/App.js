@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {render} from 'react-dom';
 import queryString from 'query-string'
 import {Redirect} from 'react-router-dom'
 //Theme and styling
@@ -16,15 +15,12 @@ import SideBar from './Components/SideBar';
 import GoogleMap from './Components/GoogleMap';
 
 //API
-import MeetUpApi, {
+import {
   parseMeetup,
   MeetUpCategories,
   categories,
 } from './api/MeetUpAPI';
-import DarkSkyApi, { getWeatherData } from './api/DarkSkyApi';
-import MeetUpApi, {parseMeetup, categories, MeetUpCategories} from './api/MeetUpAPI'
-//Firebase
-import firebase, {eventRef, uid} from './utils/Firebase'
+
 
 class App extends Component {
   constructor(props){
@@ -71,6 +67,8 @@ class App extends Component {
         return 25;
       case 3:
         return 50;
+      default:
+        return 1000;
     }
   }
   milesToMeters(miles) {
@@ -194,14 +192,14 @@ class App extends Component {
     });
   }
   getMarkerClick(marker) {
-    //get weather data for the event clicked append to clicked event and return
-    var meets = this.state.events.slice(0);
-    var meetWithWeather = getWeatherData(meets[marker.activeMarker]);
-    // console.log(meetWithWeather);
-    meets[marker.activeMarker] = meetWithWeather;
+    // //get weather data for the event clicked append to clicked event and return
+    // var meets = this.state.events.slice(0);
+    // var meetWithWeather = getWeatherData(meets[marker.activeMarker]);
+    // // console.log(meetWithWeather);
+    // meets[marker.activeMarker] = meetWithWeather;
 
+    
     this.setState({
-      events: meets,
       activeEvent: marker.activeMarker,
       showingInfoWindow: true
     })
@@ -226,6 +224,7 @@ class App extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState){
+    var searchQuery;
     if(this.state.redirect.yes){
       this.setState({
         redirect: {
@@ -236,7 +235,7 @@ class App extends Component {
       })
     }
     if(this.props.history.action === "POP" && this.props.location.search && this.props.location.search !== prevProps.location.search && this.geocoder){
-      var searchQuery = queryString.parse(this.props.location.search)
+      searchQuery = queryString.parse(this.props.location.search)
       this.setState({
           search: {
             city: searchQuery.loc,
@@ -247,7 +246,7 @@ class App extends Component {
       this.fetchData(searchQuery);
     }
     else if(this.props.history.action === "POP" && this.props.location.search && this.props.location.search !== prevProps.location.search){
-      var searchQuery = queryString.parse(this.props.location.search)
+      searchQuery = queryString.parse(this.props.location.search)
       this.setState({
         update: true,
           search: {
@@ -274,7 +273,8 @@ class App extends Component {
       visible={false}
     />);
     }
-    else{
+    else
+    {
     return (
       <CSSTransitionGroup
       transitionName = "tunnelIn"
@@ -315,7 +315,7 @@ class App extends Component {
               visible={true}
             />
           </div>
-          {this.state.redirect.yes && <Redirect push path={this.state.redirect} />}
+          {this.state.redirect.yes && <Redirect push to={this.state.redirect} />}
         </CSSTransitionGroup>
       );
     }
