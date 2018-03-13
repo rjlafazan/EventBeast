@@ -21,6 +21,9 @@ import MeetUpApi, {
   categories,
 } from './api/MeetUpAPI';
 import DarkSkyApi, { getWeatherData } from './api/DarkSkyApi';
+import MeetUpApi, {parseMeetup, categories, MeetUpCategories} from './api/MeetUpAPI'
+//Firebase
+import firebase, {eventRef} from './utils/Firebase'
 
 class App extends Component {
   constructor() {
@@ -47,7 +50,8 @@ class App extends Component {
       },
       searchError: '',
       showingInfoWindow: false,
-    };
+      eventLikes: 0
+    }
     this.callBack = this.callBack.bind(this);
     this.createServices = this.createServices.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
@@ -125,6 +129,15 @@ class App extends Component {
     this.autoComplete.bindTo('bounds', this.map);
     this.autoComplete.addListener('place_changed', this.setPlace);
     this.geocoder = new google.maps.Geocoder();
+    document.addEventListener("click", event=>{
+      if(event.target.id === 'like'){
+        var eventID = this.state.events[this.state.activeEvent].id;
+        var currentRef = eventRef.child(eventID);
+        currentRef.set({
+          likes: this.state.eventLikes + 1
+        })
+      }
+    })
   }
   onSearchChange(event) {
     this.setState({
@@ -163,11 +176,22 @@ class App extends Component {
     this.setState({
       events: meets,
       activeEvent: marker.activeMarker,
-      showingInfoWindow: true,
-    });
-
-    this.forceUpdate();
-    console.log(this.state.events[marker.activeMarker]);
+      showingInfoWindow: true
+    })
+    var eventID = this.state.events[this.state.activeEvent].id;
+    var currentRef = eventRef.child(eventID);
+    currentRef.on('value', snapshot=>{
+      if(snapshot.val()){
+        this.setState({
+          eventLikes: snapshot.val().likes
+        })
+      }
+      else{
+        this.setState({
+          eventLikes: 0
+        })
+      }
+    })
   }
   getMapClick() {
     this.setState({
@@ -221,6 +245,7 @@ class App extends Component {
               getMapClick={this.getMapClick}
               showingInfoWindow={this.state.showingInfoWindow}
               activeMarker={this.state.activeEvent}
+              eventLikes={this.state.eventLikes}
             />
           </div>
         </CSSTransitionGroup>
