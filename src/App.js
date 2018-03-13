@@ -15,7 +15,7 @@ import SideBar from './Components/SideBar'
 import GoogleMap from './Components/GoogleMap'
 
 //API
-import MeetUpApi, {parseMeetup} from './api/MeetUpAPI';
+import MeetUpApi, {parseMeetup, MeetUpCategories, categories} from './api/MeetUpAPI';
 import DarkSkyApi, {getWeatherData} from './api/DarkSkyApi';
 
 class App extends Component {
@@ -155,17 +155,11 @@ class App extends Component {
     meets[marker.activeMarker] = meetWithWeather;
     
     this.setState({
-<<<<<<< HEAD
-      activeEvent: marker.activeMarker,
-      showingInfoWindow: true
-    })
-=======
       events: meets,
       activeEvent: marker.activeMarker
     });
     this.forceUpdate()
     console.log(this.state.events[marker.activeMarker]);
->>>>>>> updates this.state.events with weather for the marker/meet clicked
   }
   getMapClick(){
     this.setState({
