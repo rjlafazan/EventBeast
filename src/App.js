@@ -45,7 +45,7 @@ class App extends Component {
       update: false,
       redirect: {
         yes: false,
-        pathname: '',
+        pathname: '/project1',
         search: ''
       }
     }
@@ -111,6 +111,7 @@ class App extends Component {
   }
 
   callBack(){
+    console.log('callback');
     // this.setState({sidebar: !this.state.sidebar});
     var searchQuery = {
       loc: this.state.search.city,
@@ -126,34 +127,19 @@ class App extends Component {
     });
 
     var qstrcmp = "?"+qstr;
-
+    console.log(qstrcmp);
+    console.log(qstrcmp.localeCompare(this.props.location.search))
     if(qstrcmp.localeCompare(this.props.location.search) !== 0){
       this.setState({
         redirect: {
           yes: true,
-          pathname: '/',
+          pathname: '/project1',
           search: qstr,
         }
       })
     }
   }
 
-  callBack(){
-    // this.setState({sidebar: !this.state.sidebar});
-    var searchQuery = {
-      loc: this.state.search.city,
-      rad: this.state.search.radius,
-      cat: this.state.search.category
-    }
-    
-    this.fetchData(searchQuery);
-    var qstr = queryString.stringify({
-      loc: this.state.search.city,
-      rad: this.state.search.radius,
-      cat: this.state.search.category
-    });
-    this.props.history.push('#'+qstr)
-  }
   setPlace(){
     if(this.autoComplete.getPlace().formatted_address){
       this.setState({
