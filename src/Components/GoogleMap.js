@@ -39,6 +39,7 @@ shouldComponentUpdate(nextProps, nextState){
     if(this.state === nextState && 
         this.props.showingInfoWindow === this.props.showingInfoWindow &&
         this.props.eventLikes === nextProps.eventLikes &&
+        this.props.canLike === nextProps.canLike &&
         this.props.markers === nextProps.markers && 
         this.props.loaded === nextProps.loaded){
             return false;
@@ -81,7 +82,11 @@ render() {
             marker={this.state.activeMarker}
             visible={this.props.showingInfoWindow}>    
             <div>
-                {this.props.showingInfoWindow && <InfoDisplay eventLikes={this.props.eventLikes} event={this.props.markers[this.props.activeMarker]} />}
+                {this.props.showingInfoWindow && <InfoDisplay 
+                                                    canLike={this.props.canLike} 
+                                                    eventLikes={this.props.eventLikes} 
+                                                    event={this.props.markers[this.props.activeMarker]} 
+                                                />}
             </div>
         </ InfoWindow>
       </Map>

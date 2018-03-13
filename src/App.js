@@ -23,7 +23,7 @@ import MeetUpApi, {
 import DarkSkyApi, { getWeatherData } from './api/DarkSkyApi';
 import MeetUpApi, {parseMeetup, categories, MeetUpCategories} from './api/MeetUpAPI'
 //Firebase
-import firebase, {eventRef} from './utils/Firebase'
+import firebase, {eventRef, uid} from './utils/Firebase'
 
 class App extends Component {
   constructor() {
@@ -50,7 +50,8 @@ class App extends Component {
       },
       searchError: '',
       showingInfoWindow: false,
-      eventLikes: 0
+      eventLikes: 0,
+      canLike: true
     }
     this.callBack = this.callBack.bind(this);
     this.createServices = this.createServices.bind(this);
@@ -136,6 +137,7 @@ class App extends Component {
         currentRef.set({
           likes: this.state.eventLikes + 1
         })
+        currentRef.child(uid).set(true);
       }
     })
   }
@@ -180,15 +182,21 @@ class App extends Component {
     })
     var eventID = this.state.events[this.state.activeEvent].id;
     var currentRef = eventRef.child(eventID);
+    var canLike = true;
     currentRef.on('value', snapshot=>{
       if(snapshot.val()){
+        if(snapshot.val()[uid]){
+          canLike = false;
+        }
         this.setState({
-          eventLikes: snapshot.val().likes
+          eventLikes: snapshot.val().likes,
+          canLike: canLike
         })
       }
       else{
         this.setState({
-          eventLikes: 0
+          eventLikes: 0,
+          canLike: canLike
         })
       }
     })
@@ -246,6 +254,7 @@ class App extends Component {
               showingInfoWindow={this.state.showingInfoWindow}
               activeMarker={this.state.activeEvent}
               eventLikes={this.state.eventLikes}
+              canLike={this.state.canLike}
             />
           </div>
         </CSSTransitionGroup>

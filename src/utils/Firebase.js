@@ -9,6 +9,8 @@ var config = {
     messagingSenderId: "599508359739"
   };
 
+var uid = null;
+
 firebase.initializeApp(config);
 firebase.auth().signInAnonymously().catch(function(error) {
     // Handle Errors here.
@@ -20,7 +22,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 if (user) {
     // User is signed in.
     var isAnonymous = user.isAnonymous;
-    var uid = user.uid;
+    uid = user.uid;
     console.log(uid);
     // ...
 } else {
@@ -34,4 +36,4 @@ var eventRef = firebase.database().ref('event');
 
 export default firebase;
 
-export {eventRef}
+export {eventRef, uid}
