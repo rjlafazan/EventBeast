@@ -57,21 +57,21 @@ import {white} from 'material-ui/styles/colors'
                 </DropDownMenu>
 
                 <ToolbarTitle 
-                text="in" 
-                style={{color: white, paddingRight: 10}}
+                    text="in" 
+                    style={{color: white, paddingRight: 10}}
                 />
 
                 <DropDownMenu 
                 value={this.props.search.category} 
                 onChange={this.props.onCategoryChange}
-                labelStyle = {{lineHeight: '50px', fontSize: 20}}
+                labelStyle={{lineHeight: '50px', fontSize: 20}}
                 listStyle = {{paddingTop: 10, paddingBottom:10}}
                 >
-                    <MenuItem style = {{fontSize: 20}} value={1} primaryText="Categories"/>
-
-                    {this.props.categories.map((category, index)=><MenuItem
-                    value = {index} primaryText = {category.name}
-        style = {{fontSize: 20}}/>)}
+                    <MenuItem style = {{fontSize: 20}} value={0} primaryText="All Categories"/>
+                    {this.props.categories.map((category, index)=>
+                        <MenuItem
+                        value={index + 1} primaryText = {category.name}
+                        style={{fontSize: 20}}/>)}
 
                 </DropDownMenu>
                 </ToolbarGroup>
