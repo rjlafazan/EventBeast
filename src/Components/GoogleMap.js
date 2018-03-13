@@ -112,7 +112,7 @@ render() {
         // centerAroundCurrentLocation={true}
         onClick={this.onMapClick}
         initialCenter={initialCenter}
-        visible={true}
+        visible={this.props.visible}
         onReady={this.props.createServices}
       >
         {this.props.markers.map((marker, index) => (

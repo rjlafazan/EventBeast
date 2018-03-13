@@ -144,6 +144,9 @@ for(var i = 0; i < categories.length; i++){
 export function parseMeetup(data){
     var array = [];
     data.events.forEach(event => {
+        if(Object.keys(event).length === 0 ){
+            return;
+        }
         if(('venue' in event)){
             array.push({
                 name: event.name,
