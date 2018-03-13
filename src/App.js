@@ -50,8 +50,6 @@ class App extends Component {
       },
       searchError: '',
       showingInfoWindow: false,
-      eventLikes: 0,
-      canLike: true
     }
     this.callBack = this.callBack.bind(this);
     this.createServices = this.createServices.bind(this);
@@ -158,6 +156,7 @@ class App extends Component {
       },
     });
   }
+<<<<<<< HEAD
   getMarkerClick(marker) {
     //get weather data for the event clicked append to clicked event and return
     var meets = this.state.events.slice(0);
@@ -165,30 +164,13 @@ class App extends Component {
     // console.log(meetWithWeather);
     meets[marker.activeMarker] = meetWithWeather;
 
+=======
+  getMarkerClick(marker){
+>>>>>>> moved like information to map
     this.setState({
       events: meets,
       activeEvent: marker.activeMarker,
       showingInfoWindow: true
-    })
-    var eventID = this.state.events[this.state.activeEvent].id;
-    var currentRef = eventRef.child(eventID);
-    var canLike = true;
-    currentRef.on('value', snapshot=>{
-      if(snapshot.val()){
-        if(snapshot.val()[uid]){
-          canLike = false;
-        }
-        this.setState({
-          eventLikes: snapshot.val().likes,
-          canLike: canLike
-        })
-      }
-      else{
-        this.setState({
-          eventLikes: 0,
-          canLike: canLike
-        })
-      }
     })
   }
   getMapClick() {
@@ -200,6 +182,7 @@ class App extends Component {
   componentDidMount() {
 =======
   componentDidMount(){
+<<<<<<< HEAD
     document.addEventListener("click", event=>{
       if(event.target.id === 'like'){
         var eventID = this.state.events[this.state.activeEvent].id;
@@ -211,6 +194,8 @@ class App extends Component {
       }
     })
 >>>>>>> moved code
+=======
+>>>>>>> moved like information to map
     setTimeout(() => this.setState({ loading: false }), 1500);
   }
 
@@ -257,8 +242,6 @@ class App extends Component {
               getMapClick={this.getMapClick}
               showingInfoWindow={this.state.showingInfoWindow}
               activeMarker={this.state.activeEvent}
-              eventLikes={this.state.eventLikes}
-              canLike={this.state.canLike}
             />
           </div>
         </CSSTransitionGroup>
