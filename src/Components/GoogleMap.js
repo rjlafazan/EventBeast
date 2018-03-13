@@ -21,7 +21,7 @@ export class MapContainer extends Component {
     }
 onMarkerClick(props, marker, e){
     this.props.getMarkerClick({
-        activeMarker: props.num,
+      activeMarker: props.num,
     });
     this.setState({
         activeMarker: marker,
@@ -55,7 +55,7 @@ render() {
         lng: this.props.center.lng
       };
     return (
-      <Map 
+      <Map
         google={this.props.google}
         zoom={6}
         containerStyle={style}
@@ -64,20 +64,18 @@ render() {
         initialCenter={initialCenter}
         visible={true}
         onReady={this.props.createServices}
-        >
-
-        {this.props.markers.map( (marker, index) => 
-            <Marker 
-                onClick={this.onMarkerClick}
-                num={index}
-                name={marker.name}
-                title={marker.title}
-                position={{lat: marker.lat, lng: marker.lng}} 
-                key={marker.key} 
-                description={marker.description}
-                
-            />
-        )}
+      >
+        {this.props.markers.map((marker, index) => (
+          <Marker
+            onClick={this.onMarkerClick}
+            num={index}
+            name={marker.name}
+            title={marker.title}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            key={marker.key}
+            description={marker.description}
+          />
+        ))}
         <InfoWindow
             marker={this.state.activeMarker}
             visible={this.props.showingInfoWindow}>    
