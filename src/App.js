@@ -315,6 +315,7 @@ class App extends Component {
               visible={true}
             />
           </div>
+          {this.state.redirect.yes && <Redirect push path={this.state.redirect} />}
         </CSSTransitionGroup>
       );
     }
