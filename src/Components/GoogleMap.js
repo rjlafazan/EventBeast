@@ -38,9 +38,10 @@ onMapClick(mapProps, map, clickEvent){
 shouldComponentUpdate(nextProps, nextState){
     if(this.state === nextState && 
         this.props.showingInfoWindow === this.props.showingInfoWindow &&
+        this.props.eventLikes === nextProps.eventLikes &&
         this.props.markers === nextProps.markers && 
         this.props.loaded === nextProps.loaded){
-        return false;
+            return false;
     }
     return true;
 }
@@ -82,7 +83,7 @@ render() {
             marker={this.state.activeMarker}
             visible={this.props.showingInfoWindow}>    
             <div>
-                {this.props.showingInfoWindow && <InfoDisplay event={this.props.markers[this.props.activeMarker]} />}
+                {this.props.showingInfoWindow && <InfoDisplay eventLikes={this.props.eventLikes} event={this.props.markers[this.props.activeMarker]} />}
             </div>
         </ InfoWindow>
       </Map>

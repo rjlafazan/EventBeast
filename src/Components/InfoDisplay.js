@@ -10,6 +10,7 @@ export default class InfoDisplay extends Component {
                 <h3>Start time: {date.toLocaleString()}</h3>
                 <div dangerouslySetInnerHTML={{__html: this.props.event.description}}></div>
                 <a href={this.props.event.link}>Learn More</a>
+                <button id="like">Likes: {this.props.eventLikes}</button>
             </div>
         )
     }
