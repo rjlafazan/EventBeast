@@ -111,7 +111,6 @@ class App extends Component {
   }
 
   callBack(){
-    console.log('callback');
     // this.setState({sidebar: !this.state.sidebar});
     var searchQuery = {
       loc: this.state.search.city,
