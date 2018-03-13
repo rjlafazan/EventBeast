@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import InfoDisplay from './InfoDisplay'
+import MapStyles from '../style/MapStyles'
 
 export class MapContainer extends Component {
     constructor(props){
@@ -64,6 +65,7 @@ render() {
         initialCenter={initialCenter}
         visible={true}
         onReady={this.props.createServices}
+        styles = {MapStyles}
         >
 
         {this.props.markers.map( (marker, index) => 
