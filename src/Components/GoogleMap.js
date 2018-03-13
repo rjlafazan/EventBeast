@@ -17,8 +17,6 @@ export class MapContainer extends Component {
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.state = {
             activeMarker: null,
-            showingInfoWindow: false,
-            num: 0
         }
     }
 onMarkerClick(props, marker, e){
@@ -27,20 +25,21 @@ onMarkerClick(props, marker, e){
     });
     this.setState({
         activeMarker: marker,
-        showingInfoWindow: true,
-        num: props.num
     })
 }
 onMapClick(mapProps, map, clickEvent){
-    if(this.state.showingInfoWindow){
+    if(this.props.showingInfoWindow){
+        this.props.getMapClick();
         this.setState({
-            showingInfoWindow: false,
             activeMarker: null
         })
     }
 }
 shouldComponentUpdate(nextProps, nextState){
-    if(this.state === nextState && this.props.markers === nextProps.markers && this.props.loaded === nextProps.loaded){
+    if(this.state === nextState && 
+        this.props.showingInfoWindow === this.props.showingInfoWindow &&
+        this.props.markers === nextProps.markers && 
+        this.props.loaded === nextProps.loaded){
         return false;
     }
     return true;
@@ -55,7 +54,6 @@ render() {
         lat: this.props.center.lat,
         lng: this.props.center.lng
       };
-    
     return (
       <Map 
         google={this.props.google}
@@ -82,17 +80,9 @@ render() {
         )}
         <InfoWindow
             marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}>    
-            <div>       
-            {this.state.showingInfoWindow &&
+            visible={this.props.showingInfoWindow}>    
             <div>
-                <h3>{this.props.markers[this.state.num].name}</h3>
-                <div
-                    dangerouslySetInnerHTML={{__html: this.props.markers[this.state.num].description}}>
-                </div>
-                <a href={this.props.markers[this.state.num].link}>Learn More</a>
-            </div>
-            }
+                {this.props.showingInfoWindow && <InfoDisplay event={this.props.markers[this.props.activeMarker]} />}
             </div>
         </ InfoWindow>
       </Map>
