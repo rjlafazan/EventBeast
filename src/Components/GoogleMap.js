@@ -20,7 +20,8 @@ export class MapContainer extends Component {
         this.state = {
             activeMarker: null,
             eventLikes: 0,
-            canLike: true
+            canLike: true,
+            collapse: true
         }
     }
 onMarkerClick(props, marker, e){
@@ -40,20 +41,22 @@ onMarkerClick(props, marker, e){
             this.setState({
                 eventLikes: snapshot.val().likes,
                 canLike: canLike,
-                activeMarker: marker,
             })
         }
         else{
             this.setState({
                 eventLikes: 0,
-                canLike: canLike,
-                activeMarker: marker,
+                canLike: canLike,           
             })
         }
     })
     this.props.getMarkerClick({
       activeMarker: props.num,
     });
+    this.setState({
+        activeMarker: marker,
+        collapse: true
+    })
 }
 onMapClick(mapProps, map, clickEvent){
     if(this.props.showingInfoWindow){
@@ -83,6 +86,11 @@ componentDidMount(){
           likes: this.state.eventLikes + 1
         })
         currentRef.child(uid).set(true);
+      }
+      else if(event.target.id === 'collapse'){
+          this.setState({
+              collapse: !this.state.collapse
+          })
       }
     })
   }
@@ -122,11 +130,13 @@ render() {
             marker={this.state.activeMarker}
             visible={this.props.showingInfoWindow}>    
             <div>
-                {this.props.showingInfoWindow && <InfoDisplay 
-                                                    canLike={this.state.canLike} 
-                                                    eventLikes={this.state.eventLikes} 
-                                                    event={this.props.markers[this.props.activeMarker]} 
-                                                />}
+                {this.props.showingInfoWindow && 
+                <InfoDisplay 
+                    collapse={this.state.collapse}
+                    canLike={this.state.canLike} 
+                    eventLikes={this.state.eventLikes} 
+                    event={this.props.markers[this.props.activeMarker]} 
+                />}
             </div>
         </ InfoWindow>
       </Map>

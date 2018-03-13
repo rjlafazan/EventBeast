@@ -98,7 +98,8 @@ class App extends Component {
           this.setState({
             searchError: '',
             events: meetupArray,
-            showingInfoWindow: false
+            showingInfoWindow: false,
+            activeEvent: null
           })
         });
       }
@@ -202,6 +203,7 @@ class App extends Component {
   render() {
     if (this.state.loading) {
       return null;
+<<<<<<< HEAD
     } else {
       return (
         <CSSTransitionGroup
@@ -233,6 +235,38 @@ class App extends Component {
                 categories={categories}
               />
             </MuiThemeProvider>
+=======
+    }else{
+    return (
+      <CSSTransitionGroup
+      transitionName = "tunnelIn"
+      transitionAppear={true}
+      transitionAppearTimeout={2000}
+      transitionEnter={false}
+      transitionLeave={false}>
+
+      <div className = 'wrapper'>
+        <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme)}>
+          <Nav className = 'navBar'/>
+          </MuiThemeProvider>
+          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
+          <SideBar 
+            openClose={this.state.sidebar}
+            events={this.state.events}
+          />
+          </MuiThemeProvider>
+          <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
+          <SearchBar
+            callback={this.callBack}
+            onSearchChange={this.onSearchChange}
+            onCategoryChange={this.onCategoryChange}
+            onRadiusChange={this.onRadiusChange}
+            search={this.state.search}
+            searchError={this.state.searchError}
+            categories={categories}
+          />
+          </MuiThemeProvider>
+>>>>>>> added collapsable infowindow
             <GoogleMap
               center={this.state.center}
               markers={this.state.events}
