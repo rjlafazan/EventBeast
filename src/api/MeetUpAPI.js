@@ -143,7 +143,14 @@ for(var i = 0; i < categories.length; i++){
 
 export function parseMeetup(data){
     var array = [];
+    if('errors' in data){
+        console.log(data.errors[0].message)
+        return [];
+    }
     data.events.forEach(event => {
+        if(Object.keys(event).length === 0 ){
+            return;
+        }
         if(('venue' in event)){
             array.push({
                 name: event.name,

@@ -71,11 +71,19 @@ import {white} from 'material-ui/styles/colors'
                     <MenuItem style = {{fontSize: 20}} value={0} primaryText="All Categories"/>
                     {this.props.categories.map((category, index)=>
                         <MenuItem
+<<<<<<< HEAD
                         value={index + 1} primaryText = {category.name}
                         style={{fontSize: 20}}
                         key = {index}/>)}
+=======
+                        key={category.id}
+                        value={index + 1} 
+                        primaryText={category.name}
+                        style={{fontSize: 20}}/>)}
+>>>>>>> master
 
                 </DropDownMenu>
+
                 </ToolbarGroup>
 
                 <ToolbarGroup lastChild = {true}>

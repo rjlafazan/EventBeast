@@ -9,7 +9,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import InfoDisplay from './InfoDisplay'
+<<<<<<< HEAD
 import MapStyles from '../style/MapStyles'
+=======
+//Firebase
+import {eventRef, uid} from '../utils/Firebase'
+//API
+import { getWeatherData } from '../api/DarkSkyApi';
+>>>>>>> master
 
 export class MapContainer extends Component {
     constructor(props){
@@ -18,14 +25,56 @@ export class MapContainer extends Component {
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.state = {
             activeMarker: null,
+            eventLikes: 0,
+            canLike: true,
+            collapse: true,
+            weather: null
         }
+        this.getWeather = this.getWeather.bind(this);
     }
+    
+getWeather(data){
+    this.setState({weather: data})
+}
 onMarkerClick(props, marker, e){
+    //get weather data for the event clicked 
+    getWeatherData(this.props.markers[props.num], this.getWeather);
+
+    var eventID;
+    var currentRef;
+
+    var canLike = true;
+    if(this.props.activeMarker){
+        eventID = this.props.markers[this.props.activeMarker].id;
+        currentRef = eventRef.child(eventID);
+        currentRef.off();
+      }
+    eventID = this.props.markers[props.num].id;
+    currentRef = eventRef.child(eventID);
+    currentRef.on('value', snapshot=>{
+        if(snapshot.val()){
+            if(snapshot.val()[uid]){
+                canLike = false;
+            }
+            this.setState({
+                eventLikes: snapshot.val().likes,
+                canLike: canLike,
+            })
+        }
+        else{
+            this.setState({
+                eventLikes: 0,
+                canLike: canLike,           
+            })
+        }
+    })
     this.props.getMarkerClick({
-        activeMarker: props.num,
+      activeMarker: props.num,
     });
     this.setState({
         activeMarker: marker,
+        collapse: true,
+        // weather: meetWithWeather
     })
 }
 onMapClick(mapProps, map, clickEvent){
@@ -38,13 +87,38 @@ onMapClick(mapProps, map, clickEvent){
 }
 shouldComponentUpdate(nextProps, nextState){
     if(this.state === nextState && 
-        this.props.showingInfoWindow === this.props.showingInfoWindow &&
+        this.props.showingInfoWindow === nextProps.showingInfoWindow &&
+        this.props.activeMarker === nextProps.activeMarker &&
+        this.props.eventLikes === nextProps.eventLikes &&
+        this.props.canLike === nextProps.canLike &&
         this.props.markers === nextProps.markers && 
         this.props.loaded === nextProps.loaded){
-        return false;
+            return false;
     }
     return true;
 }
+componentDidMount(){
+    // console.log('map mounted');
+    if(this.props.visible){
+        // console.log('map mounted visible');
+        document.addEventListener("click", event=>{
+          if(event.target.id === 'like'){
+              console.log(this.props);
+            var eventID = this.props.markers[this.props.activeMarker].id;
+            var currentRef = eventRef.child(eventID);
+            currentRef.set({
+              likes: this.state.eventLikes + 1
+            })
+            currentRef.child(uid).set(true);
+          }
+          else if(event.target.id === 'collapse'){
+              this.setState({
+                  collapse: !this.state.collapse
+              })
+          }
+        })
+    }
+  }
 render() {
     const style = {
         width: '100%',
@@ -56,15 +130,16 @@ render() {
         lng: this.props.center.lng
       };
     return (
-      <Map 
+      <Map
         google={this.props.google}
         zoom={6}
         containerStyle={style}
         // centerAroundCurrentLocation={true}
         onClick={this.onMapClick}
         initialCenter={initialCenter}
-        visible={true}
+        visible={this.props.visible}
         onReady={this.props.createServices}
+<<<<<<< HEAD
         styles = {MapStyles}
         >
 
@@ -81,11 +156,32 @@ render() {
                 icon = {'https://image.ibb.co/kNOH5H/marker.png'}
             />
         )}
+=======
+      >
+        {this.props.markers.map((marker, index) => (
+          <Marker
+            onClick={this.onMarkerClick}
+            num={index}
+            name={marker.name}
+            title={marker.title}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            key={marker.key}
+            description={marker.description}
+          />
+        ))}
+>>>>>>> master
         <InfoWindow
             marker={this.state.activeMarker}
             visible={this.props.showingInfoWindow}>    
             <div>
-                {this.props.showingInfoWindow && <InfoDisplay event={this.props.markers[this.props.activeMarker]} />}
+                {this.props.showingInfoWindow && 
+                <InfoDisplay 
+                    collapse={this.state.collapse}
+                    canLike={this.state.canLike} 
+                    eventLikes={this.state.eventLikes} 
+                    event={this.props.markers[this.props.activeMarker]} 
+                    weather={this.state.weather}
+                />}
             </div>
         </ InfoWindow>
       </Map>
@@ -103,7 +199,6 @@ MapContainer.propTypes = {
     markers: PropTypes.array,
     getMarkerClick: PropTypes.func,
     createServices: PropTypes.func,
-    getMarkerClick: PropTypes.func,
 }
 
 export default GoogleApiWrapper({
