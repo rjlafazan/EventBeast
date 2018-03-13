@@ -6,7 +6,7 @@ import NewZIndex from './style/NewZIndex'
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './style/App.css';
-import {CSSTransitionGroup} from 'react-transition-group'; // ES6//entering animation
+import {CSSTransitionGroup} from 'react-transition-group'; //entering animation
 //Components
 import Nav from './Components/NavBar'
 import SearchBar from "./Components/SearchBar"
