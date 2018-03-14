@@ -12,7 +12,7 @@ import InfoDisplay from './InfoDisplay'
 //Firebase
 import {eventRef, uid} from '../utils/Firebase'
 //API
-import { getWeatherData } from '../api/DarkSkyApi';
+// import { getWeatherData } from '../api/DarkSkyApi';
 
 export class MapContainer extends Component {
     constructor(props){
@@ -26,15 +26,15 @@ export class MapContainer extends Component {
             collapse: true,
             weather: null
         }
-        this.getWeather = this.getWeather.bind(this);
+        // this.getWeather = this.getWeather.bind(this);
     }
     
-getWeather(data){
-    this.setState({weather: data})
-}
+// getWeather(data){
+//     this.setState({weather: data})
+// }
 onMarkerClick(props, marker, e){
-    //get weather data for the event clicked 
-    getWeatherData(this.props.markers[props.num], this.getWeather);
+    // //get weather data for the event clicked 
+    // getWeatherData(this.props.markers[props.num], this.getWeather);
 
     var eventID;
     var currentRef;
