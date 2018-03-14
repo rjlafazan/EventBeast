@@ -15,62 +15,65 @@ var params = {
   eventEndTime: moment('2018-03-15 18:00', 'YYYY-MM-DD HH:MM'),
 };
 
-export function getWeatherData(meet, callback) {
+export function getWeatherData(meet) {
   // console.log(meet);
   //if weather data exsists
-  if (meet.weather) {
-    return meet;
-  }
+
   return new Promise((resolve, reject) => {
-    var pos = {
-      latitude: meet.lat,
-      longitude: meet.lng,
-    };
-    var time = moment(meet.start);
-    var eventStartTime = meet.start / 1000;
-    var eventEndTime = eventStartTime + meet.duration / 1000;
-    // console.log(`${time}   ${eventStartTime}   ${eventEndTime}`);
+    if (meet.weather) {
+      resolve(meet);
+    } else {
+      
+      var pos = {
+        latitude: meet.lat,
+        longitude: meet.lng,
+      };
+      var time = moment(meet.start);
+      var eventStartTime = meet.start / 1000;
+      var eventEndTime = eventStartTime + meet.duration / 1000;
+      // console.log(`${time}   ${eventStartTime}   ${eventEndTime}`);
 
-    //switching keys
-    DarkSkyApi.apiKey = key2;
+      //switching keys
+      DarkSkyApi.apiKey = key2;
 
-    if (meet.start) {
-      DarkSkyApi.loadTime(time, pos).then((data) => {
-        // console.log(data);
-        var weather = {
-          highTemp: data.daily.data[0].temperatureHigh,
-          lowTemp: data.daily.data[0].temperatureLow,
-          summary: data.daily.data[0].summary,
-          icon: data.daily.data[0].icon,
-          windSpeed: data.daily.data[0].windSpeed,
-        };
-        var secInHr = 60 * 60;
-        var hourBeforeStart = eventStartTime - secInHr;
-        var hourAfterEnd = eventEndTime + secInHr;
+      if (meet.start) {
+        DarkSkyApi.loadTime(time, pos).then((data) => {
+          // console.log(data);
+          var weather = {
+            highTemp: data.daily.data[0].temperatureHigh,
+            lowTemp: data.daily.data[0].temperatureLow,
+            summary: data.daily.data[0].summary,
+            icon: data.daily.data[0].icon,
+            windSpeed: data.daily.data[0].windSpeed,
+          };
+          var secInHr = 60 * 60;
+          var hourBeforeStart = eventStartTime - secInHr;
+          var hourAfterEnd = eventEndTime + secInHr;
 
-        if (meet.duration) {
-          var hourly = [];
-          data.hourly.data.forEach((e) => {
-            if (e.time >= hourBeforeStart && e.time <= hourAfterEnd) {
-              var hrWeather = [];
-              hrWeather.push({
-                time: e.time,
-                temp: e.temperature,
-                summary: e.summary,
-                icon: e.icon,
-                windSpeed: e.windSpeed,
-              });
-              hourly.push(hrWeather);
-            }
-          });
-          weather.hourly = hourly;
-        }
-        // console.log(weather);
-        //   return array;
-        meet.weather = weather;
-        // console.log(meet);
-        resolve(meet);
-      });
+          if (meet.duration) {
+            var hourly = [];
+            data.hourly.data.forEach((e) => {
+              if (e.time >= hourBeforeStart && e.time <= hourAfterEnd) {
+                var hrWeather = [];
+                hrWeather.push({
+                  time: e.time,
+                  temp: e.temperature,
+                  summary: e.summary,
+                  icon: e.icon,
+                  windSpeed: e.windSpeed,
+                });
+                hourly.push(hrWeather);
+              }
+            });
+            weather.hourly = hourly;
+          }
+          // console.log(weather);
+          //   return array;
+          meet.weather = weather;
+          // console.log(meet);
+          resolve(meet);
+        });
+      }
     }
   });
 }
