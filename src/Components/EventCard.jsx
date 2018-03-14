@@ -24,9 +24,11 @@ export default class EventCard extends React.Component {
       title={this.props.event.name}
       subtitle={date.toLocaleString()}
       onClick ={this.props.clickCardHeader}
+      style={{ textAlign: 'center'}}
+      textStyle={{paddingRight: 0}}
     />
     <CardActions>
-    <FlatButton icon = {<ContentAdd/>} onClick = {this.handleClick} fullWidth={true}/>
+    <FlatButton icon = {<ContentAdd color = '#FBC02D'/>} onClick = {this.handleClick} fullWidth={true}/>
     </CardActions>
     <CardText expandable={true} dangerouslySetInnerHTML = {{__html:this.props.event.description}}/>
   </Card>

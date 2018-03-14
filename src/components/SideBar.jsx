@@ -5,6 +5,7 @@ import EventCard from './EventCard'
 
 
 
+
 export default class SideBar extends React.Component {
 
   constructor(props) {

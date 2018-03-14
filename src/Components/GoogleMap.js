@@ -129,7 +129,7 @@ render() {
     return (
       <Map
         google={this.props.google}
-
+        zoom={6}
         containerStyle={style}
         // centerAroundCurrentLocation={true}
         onClick={this.onMapClick}
@@ -149,7 +149,7 @@ render() {
                 position={{lat: marker.lat, lng: marker.lng}} 
                 key={marker.key} 
                 description={marker.description}
-                icon = {'https://image.ibb.co/dxA8xx/marker.png'}
+                icon = {require('../img/marker.png')}
             />
         )}
         <InfoWindow

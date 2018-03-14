@@ -15,15 +15,17 @@ export default class Nav extends React.Component {
 	render(){
 		return(
 			<AppBar
-			title="Event Beast"
+			// title={<div><img src = {require('../img/Logo.png')} style = {{width:64,height:64}}/><span>Event Beast</span></div>}
+			title = 'Event Beast'
+			showMenuIconButton={false}
 			iconElementRight={<FlatButton label="About Us" onClick={this.handleOpenDialog} />}>
 				<Dialog
 					title="About Us"
 					modal={false}
 					open={this.state.open}
-					onRequestClose={this.handleClose}>
+					onRequestClose={this.handleClose}
+					actions = {<FlatButton label = "Close" primary={true} onClick = {this.handleClose}/>}>
 						We are the best - fuck the rest!
-						<FlatButton label = "Close" onClick = {this.handleClose}/>
 				</Dialog>
 			</AppBar>
 		)
