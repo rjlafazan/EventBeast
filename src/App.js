@@ -98,6 +98,7 @@ class App extends Component {
         MeetUpCategories[searchQuery.cat].fetchP(data=>{
           var meetupArray = parseMeetup(data.data);
           this.setState({
+            sidebar: true,
             searchError: '',
             events: meetupArray,
             showingInfoWindow: false,
@@ -111,9 +112,9 @@ class App extends Component {
     });
   }
 
+
   callBack(){
     console.log('callback');
-   this.setState({sidebar: !this.state.sidebar});
     var searchQuery = {
       loc: this.state.search.city,
       rad: this.state.search.radius,
@@ -301,8 +302,8 @@ class App extends Component {
           <Nav className = 'navBar'/>
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
-          <SideBar 
-            openClose={this.state.sidebar}
+          <SideBar
+            open = {this.state.sidebar}
             events={this.state.events}
           />
           </MuiThemeProvider>
