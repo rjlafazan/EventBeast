@@ -27,6 +27,7 @@ export class MapContainer extends Component {
             weather: null
         }
         this.getWeather = this.getWeather.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
     
 getWeather(data){
@@ -93,27 +94,32 @@ shouldComponentUpdate(nextProps, nextState){
     }
     return true;
 }
+handleClick(event){
+    if(event.target.id === 'like'){
+      var eventID = this.props.markers[this.props.activeMarker].id;
+      var currentRef = eventRef.child(eventID);
+      currentRef.set({
+        likes: this.state.eventLikes + 1
+      })
+      currentRef.child(uid).set(true);
+    }
+    else if(event.target.id === 'collapse'){
+        this.setState({
+            collapse: !this.state.collapse
+        })
+    }
+}
 componentDidMount(){
     // console.log('map mounted');
     if(this.props.visible){
         // console.log('map mounted visible');
-        document.addEventListener("click", event=>{
-          if(event.target.id === 'like'){
-              console.log(this.props);
-            var eventID = this.props.markers[this.props.activeMarker].id;
-            var currentRef = eventRef.child(eventID);
-            currentRef.set({
-              likes: this.state.eventLikes + 1
-            })
-            currentRef.child(uid).set(true);
-          }
-          else if(event.target.id === 'collapse'){
-              this.setState({
-                  collapse: !this.state.collapse
-              })
-          }
-        })
+        document.addEventListener("click", this.handleClick);
     }
+  }
+  componentWillUnmount(){
+      if(this.props.visible){
+          document.removeEventListener("click", this.handleClick);
+      }
   }
 render() {
     const style = {
@@ -172,10 +178,32 @@ render() {
 // createServices : a callback function that is called when map is ready. Will create the places and geocoder services
 // getMarkerClick : a callback function that supplies the index of which marker was clicked
 
+
+// center={this.state.center}
+// markers={this.state.events}
+// createServices={this.createServices}
+// getMarkerClick={this.getMarkerClick}
+// getMapClick={this.getMapClick}
+// showingInfoWindow={this.state.showingInfoWindow}
+// activeMarker={this.state.activeEvent}
+// visible={false}
+
 MapContainer.propTypes = {
     markers: PropTypes.array,
     getMarkerClick: PropTypes.func,
     createServices: PropTypes.func,
+}
+
+MapContainer.defaultProps = {
+    markers: [],
+    getMarkerClick: function(){return},
+    getMapClick: function(){return},
+    center: {
+        lat: 32,
+        lng: -121
+    },
+    showingInfoWindow: false,
+    activeMarker: null
 }
 
 export default GoogleApiWrapper({

@@ -45,7 +45,7 @@ class App extends Component {
       update: false,
       redirect: {
         yes: false,
-        pathname: '/project1/',
+        pathname: '/project1/search',
         search: ''
       }
     }
@@ -130,7 +130,7 @@ class App extends Component {
       this.setState({
         redirect: {
           yes: true,
-          pathname: '/project1/',
+          pathname: '/project1/search',
           search: qstr,
         }
       })
@@ -216,7 +216,7 @@ class App extends Component {
   }
 
   componentDidMount(){
-    if(this.props.history.action === "POP" && this.props.location.search){
+    if(this.props.location.search){
       var searchQuery = queryString.parse(this.props.location.search)
       this.setState({
         update: true,
@@ -229,6 +229,7 @@ class App extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState){
+
     var searchQuery;
     if(this.state.redirect.yes){
       this.setState({
@@ -265,20 +266,20 @@ class App extends Component {
 
 
   render() {
-    if(this.state.loading){
-      return (
-      <GoogleMap
-      center={this.state.center}
-      markers={this.state.events}
-      createServices={this.createServices}
-      getMarkerClick={this.getMarkerClick}
-      getMapClick={this.getMapClick}
-      showingInfoWindow={this.state.showingInfoWindow}
-      activeMarker={this.state.activeEvent}
-      visible={false}
-    />);
-    }
-    else
+    // if(this.state.loading){
+    //   return (
+    //   <GoogleMap
+    //   center={this.state.center}
+    //   markers={this.state.events}
+    //   createServices={this.createServices}
+    //   getMarkerClick={this.getMarkerClick}
+    //   getMapClick={this.getMapClick}
+    //   showingInfoWindow={this.state.showingInfoWindow}
+    //   activeMarker={this.state.activeEvent}
+    //   visible={false}
+    // />);
+    // }
+    // else
     {
     return (
       <CSSTransitionGroup
