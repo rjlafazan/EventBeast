@@ -9,14 +9,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import InfoDisplay from './InfoDisplay'
-<<<<<<< HEAD
 import MapStyles from '../style/MapStyles'
-=======
 //Firebase
 import {eventRef, uid} from '../utils/Firebase'
 //API
 import { getWeatherData } from '../api/DarkSkyApi';
->>>>>>> master
 
 export class MapContainer extends Component {
     constructor(props){
@@ -139,7 +136,6 @@ render() {
         initialCenter={initialCenter}
         visible={this.props.visible}
         onReady={this.props.createServices}
-<<<<<<< HEAD
         styles = {MapStyles}
         >
 
@@ -153,23 +149,9 @@ render() {
                 position={{lat: marker.lat, lng: marker.lng}} 
                 key={marker.key} 
                 description={marker.description}
-                icon = {'https://image.ibb.co/kNOH5H/marker.png'}
+                icon = {'https://image.ibb.co/g6pWzc/marker.png'}
             />
         )}
-=======
-      >
-        {this.props.markers.map((marker, index) => (
-          <Marker
-            onClick={this.onMarkerClick}
-            num={index}
-            name={marker.name}
-            title={marker.title}
-            position={{ lat: marker.lat, lng: marker.lng }}
-            key={marker.key}
-            description={marker.description}
-          />
-        ))}
->>>>>>> master
         <InfoWindow
             marker={this.state.activeMarker}
             visible={this.props.showingInfoWindow}>    

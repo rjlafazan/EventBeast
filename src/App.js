@@ -7,11 +7,7 @@ import NewZIndex from './style/NewZIndex';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './style/App.css';
-<<<<<<< HEAD
 import {CSSTransitionGroup} from 'react-transition-group'; //entering animation
-=======
-import { CSSTransitionGroup } from 'react-transition-group'; // ES6//entering animation
->>>>>>> master
 //Components
 import Nav from './Components/NavBar';
 import SearchBar from './Components/SearchBar';
@@ -116,7 +112,7 @@ class App extends Component {
 
   callBack(){
     console.log('callback');
-    // this.setState({sidebar: !this.state.sidebar});
+   this.setState({sidebar: !this.state.sidebar});
     var searchQuery = {
       loc: this.state.search.city,
       rad: this.state.search.radius,
