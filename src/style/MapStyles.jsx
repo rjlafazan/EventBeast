@@ -127,7 +127,7 @@ const MapStyles =
     "elementType": "geometry.fill",
     "stylers": [
       {
-        "color": "#787878"
+        "color": "#969696"
       }
     ]
   },

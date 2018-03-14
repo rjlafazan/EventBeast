@@ -1,7 +1,7 @@
 import React from 'react';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
-import EventCard from './ToggleEventCard'
+import EventCard from './EventCard'
 
 
 
