@@ -20,12 +20,8 @@ import {
   MeetUpCategories,
   categories,
 } from './api/MeetUpAPI';
-<<<<<<< HEAD
-
-=======
 import DarkSkyApi, { getWeatherData } from './api/DarkSkyApi';
 import { log } from 'util';
->>>>>>> fixed async with new Promise
 
 class App extends Component {
   constructor(props){
@@ -202,19 +198,6 @@ class App extends Component {
     });
   }
   getMarkerClick(marker) {
-<<<<<<< HEAD
-    // //get weather data for the event clicked append to clicked event and return
-    // var meets = this.state.events.slice(0);
-    // var meetWithWeather = getWeatherData(meets[marker.activeMarker]);
-    // // console.log(meetWithWeather);
-    // meets[marker.activeMarker] = meetWithWeather;
-
-    
-    this.setState({
-      activeEvent: marker.activeMarker,
-      showingInfoWindow: true
-    })
-=======
     //get weather data for the event clicked append to clicked event and return
     var meets = this.state.events.slice(0);
     getWeatherData(meets[marker.activeMarker]).then((meetWithWeather) => {
@@ -231,7 +214,6 @@ class App extends Component {
         }
       );
     });
->>>>>>> fixed async with new Promise
   }
 
   getMapClick() {
