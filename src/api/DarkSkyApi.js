@@ -23,7 +23,6 @@ export function getWeatherData(meet) {
     if (meet.weather) {
       resolve(meet);
     } else {
-      
       var pos = {
         latitude: meet.lat,
         longitude: meet.lng,
@@ -40,11 +39,11 @@ export function getWeatherData(meet) {
         DarkSkyApi.loadTime(time, pos).then((data) => {
           // console.log(data);
           var weather = {
-            highTemp: data.daily.data[0].temperatureHigh,
-            lowTemp: data.daily.data[0].temperatureLow,
+            highTemp: parseFloat(data.daily.data[0].temperatureHigh).toFixed(2),
+            lowTemp: parseFloat(data.daily.data[0].temperatureLow).toFixed(2),
             summary: data.daily.data[0].summary,
             icon: data.daily.data[0].icon,
-            windSpeed: data.daily.data[0].windSpeed,
+            windSpeed: parseFloat(data.daily.data[0].windSpeed).toFixed(2),
           };
           var secInHr = 60 * 60;
           var hourBeforeStart = eventStartTime - secInHr;
@@ -53,14 +52,14 @@ export function getWeatherData(meet) {
           if (meet.duration) {
             var hourly = [];
             data.hourly.data.forEach((e) => {
-              if (e.time >= hourBeforeStart && e.time <= hourAfterEnd) {
+              if (e.time >= hourBeforeStart && e.time < hourAfterEnd) {
                 var hrWeather = [];
                 hrWeather.push({
                   time: e.time,
-                  temp: e.temperature,
+                  temp: parseFloat(e.temperature).toFixed(2),
                   summary: e.summary,
                   icon: e.icon,
-                  windSpeed: e.windSpeed,
+                  windSpeed: parseFloat(e.windSpeed).toFixed(2),
                 });
                 hourly.push(hrWeather);
               }
