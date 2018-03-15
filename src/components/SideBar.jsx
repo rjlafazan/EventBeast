@@ -15,7 +15,13 @@ export default class SideBar extends React.Component {
       <Drawer width = {'25%'} open = {this.props.open}>
         <AppBar title="Available Events:"/>
         {this.props.events.map((event, index)=>
-          <EventCard onClick={this.onClick} key={event.id} event={event} num={index}/>)}
+          <EventCard 
+            onClick={this.onClick} 
+            key={event.id} 
+            event={event} 
+            num={index}
+            active={index === this.props.activeEvent}
+            />)}
       </Drawer>
     );
   }

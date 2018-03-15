@@ -276,6 +276,7 @@ class App extends Component {
               open={this.state.sidebar}
               events={this.state.events}
               sideBarClick={this.sideBarClick}
+              activeEvent={this.state.activeEvent}
             />
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme={getMuiTheme(BeastTheme, NewZIndex)}>
