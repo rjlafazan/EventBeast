@@ -30,9 +30,10 @@ export default class Nav extends React.Component {
 						<h3>Built using:</h3>
 						<img src = {require('../img/BuiltLogo/ReactLogo.png')} alt='react' style={{width: 100}}/>
 						<img src = {require('../img/BuiltLogo/materialLogo.svg')} alt = 'material-ui' style={{width:150}}/>
-						<img src = {require('../img/BuiltLogo/darkskyLogo.png')} alt = 'darkSky' style={{width:175}}/>
-						<img src = {require('../img/BuiltLogo/meetupLogo.svg')} alt = 'meetUp' style={{width:100, marginLeft:25}}/>
-						<img src = {require('../img/BuiltLogo/firebaseLogo.png')} alt ='firebase' style={{width:115, marginLeft:25}}/>
+						<img src = {require('../img/BuiltLogo/googlemapLogo.png')} alt = 'googleMaps' style={{width: 175}}/>
+						<img src = {require('../img/BuiltLogo/darkskyLogo.png')} alt = 'darkSky' style={{width:200}}/>
+						<img src = {require('../img/BuiltLogo/meetupLogo.svg')} alt = 'meetUp' style={{width:100}}/>
+						<img src = {require('../img/BuiltLogo/firebaseLogo.png')} alt ='firebase' style={{width:115, marginLeft:20, marginRight:20}}/>
 						</div>
 				</Dialog>
 			</AppBar>
