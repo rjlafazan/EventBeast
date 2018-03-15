@@ -233,6 +233,7 @@ class App extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState){
+
     var searchQuery;
     if(this.props.history.action === "POP" && this.props.location.search && this.props.location.search !== prevProps.location.search){
       this.setSearch();
