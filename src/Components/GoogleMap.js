@@ -34,6 +34,10 @@ export class MapContainer extends Component {
 // getWeather(data){
 //     this.setState({weather: data})
 // }
+createServices = (mapProps, map) =>{
+    this.props.createServices(mapProps,map);
+}
+
 onMarkerClick(props, marker, e){
     // //get weather data for the event clicked 
     // getWeatherData(this.props.markers[props.num], this.getWeather);
@@ -70,8 +74,8 @@ onMarkerClick(props, marker, e){
       activeMarker: props.num,
     });
     this.setState({
-        activeMarker: marker,
         collapse: true,
+        activeMarker: marker
         // weather: meetWithWeather
     })
 }
@@ -90,10 +94,14 @@ shouldComponentUpdate(nextProps, nextState){
         this.props.eventLikes === nextProps.eventLikes &&
         this.props.canLike === nextProps.canLike &&
         this.props.markers === nextProps.markers && 
+        this.props.Marker === nextProps.Marker &&
         this.props.loaded === nextProps.loaded){
             return false;
     }
     return true;
+}
+componentWillReceiveProps(nextProps){
+
 }
 handleClick(event){
     if(event.target.id === 'like'){
@@ -132,6 +140,11 @@ render() {
         lat: this.props.center.lat,
         lng: this.props.center.lng
       };
+    var newLatLng = null
+     if(this.props.loaded && this.props.activeMarker !== null){
+         var google = this.props.google;
+         newLatLng = new google.maps.LatLng(this.props.markers[this.props.activeMarker].lat, this.props.markers[this.props.activeMarker].lng);
+     }
     return (
       <Map
         google={this.props.google}
@@ -141,7 +154,7 @@ render() {
         onClick={this.onMapClick}
         initialCenter={initialCenter}
         visible={this.props.visible}
-        onReady={this.props.createServices}
+        onReady={this.createServices}
         styles = {MapStyles}
         >
 
@@ -159,7 +172,7 @@ render() {
             />
         )}
         <InfoWindow
-            marker={this.state.activeMarker}
+            position={newLatLng}
             visible={this.props.showingInfoWindow}>    
             <div>
                 {this.props.showingInfoWindow && 

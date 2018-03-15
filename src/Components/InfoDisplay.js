@@ -39,9 +39,7 @@ export default class InfoDisplay extends Component {
         </Paper>
         {props.hourly &&
           props.hourly.map((val) => {
-            {
               return this._renderHourlyWeather(val);
-            }
           })}
       </div>
     );
@@ -85,10 +83,10 @@ export default class InfoDisplay extends Component {
       overflowX: 'auto',
       position: 'relative',
     };
-    const click = {
-      color: '#777',
-      cursor: 'pointer',
-    };
+    // const click = {
+    //   color: '#777',
+    //   cursor: 'pointer',
+    // };
     const container = {
       paddingTop: '14px',
       position: 'sticky',
@@ -100,9 +98,9 @@ export default class InfoDisplay extends Component {
       <div style={this.props.collapse ? collapseStlye : expandStlye}>
       <h2>{this.props.event.name}</h2>
       <h3>Start time: {date.toLocaleString()}</h3>
-        <MuiThemeProvider muiTheme={getMuiTheme(BeastTheme)}>
+        {this.props.event.weather && <MuiThemeProvider muiTheme={getMuiTheme(BeastTheme)}>
           {this._renderWeather(this.props.event.weather)}
-        </MuiThemeProvider>
+        </MuiThemeProvider>}
 
         {/* <div>{this._renderHourlyWeather(this.props.event.weather)}</div> */}
         <a href={this.props.event.link}>Learn More</a>

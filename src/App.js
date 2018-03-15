@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import queryString from 'query-string'
-import {Redirect} from 'react-router-dom'
 //Theme and styling
 import BeastTheme from './style/BeastTheme';
 import NewZIndex from './style/NewZIndex';
@@ -9,16 +8,14 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './style/App.css';
 import {CSSTransitionGroup} from 'react-transition-group'; //entering animation
 //Components
-import Nav from './components/NavBar';
-import SearchBar from './components/SearchBar';
-import SideBar from './components/SideBar';
-import GoogleMap from './components/GoogleMap';
-import MeetUp from './components/MeetUp'
+import Nav from './Components/NavBar';
+import SearchBar from './Components/SearchBar';
+import SideBar from './Components/SideBar';
+import GoogleMap from './Components/GoogleMap';
+import MeetUp from './Components/MeetUp'
 
 //API
 import {
-  parseMeetup,
-  MeetUpCategories,
   categories,
 } from './api/MeetUpAPI';
 import DarkSkyApi, { getWeatherData } from './api/DarkSkyApi';
@@ -62,6 +59,22 @@ class App extends Component {
     this.getMarkerClick = this.getMarkerClick.bind(this);
     this.getMapClick = this.getMapClick.bind(this);
     this.setSearch = this.setSearch.bind(this);
+  }
+  sideBarClick = num => {
+    var meets = this.state.events.slice(0);
+    getWeatherData(meets[num]).then((meetWithWeather) => {
+      meets[num] = meetWithWeather;
+      this.setState({
+          events: meets,
+        });
+    });
+    var e = this.state.events[num];
+    var newCenter = new this.google.maps.LatLng(e.lat, e.lng);
+    this.map.setCenter(newCenter);
+    this.setState({
+      showingInfoWindow: true,
+      activeEvent: num
+    })
   }
   pushHistory(){
     var searchQuery = {
@@ -188,19 +201,15 @@ class App extends Component {
   getMarkerClick(marker) {
     //get weather data for the event clicked append to clicked event and return
     var meets = this.state.events.slice(0);
+    this.setState({
+      activeEvent: marker.activeMarker,
+      showingInfoWindow: true,
+    });
     getWeatherData(meets[marker.activeMarker]).then((meetWithWeather) => {
       meets[marker.activeMarker] = meetWithWeather;
-
-      this.setState(
-        {
+      this.setState({
           events: meets,
-          activeEvent: marker.activeMarker,
-          showingInfoWindow: true,
-        },
-        () => {
-          console.log(this.state);
-        }
-      );
+        });
     });
   }
 
@@ -258,6 +267,7 @@ class App extends Component {
           <SideBar
             open = {this.state.sidebar}
             events={this.state.events}
+            sideBarClick={this.sideBarClick}
           />
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme = {getMuiTheme(BeastTheme, NewZIndex)}>
