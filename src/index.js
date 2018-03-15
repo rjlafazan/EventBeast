@@ -11,7 +11,10 @@ ReactDOM.render(
     <div>
         <Route exact path='/project1' component={Landing} />
         <Route path='/project1/search' component={App} />
+<<<<<<< HEAD
         <Route path='/project1/login' />
+=======
+>>>>>>> router
     </div>
 </Router>, 
 document.getElementById('root'));
