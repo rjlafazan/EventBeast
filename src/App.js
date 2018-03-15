@@ -9,11 +9,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './style/App.css';
 import {CSSTransitionGroup} from 'react-transition-group'; //entering animation
 //Components
-import Nav from './components/NavBar';
-import SearchBar from './components/SearchBar';
-import SideBar from './components/SideBar';
-import GoogleMap from './components/GoogleMap';
-import MeetUp from './components/MeetUp'
+import Nav from './Components/NavBar';
+import SearchBar from './Components/SearchBar';
+import SideBar from './Components/SideBar';
+import GoogleMap from './Components/GoogleMap';
+import MeetUp from './Components/MeetUp'
 
 //API
 import {
