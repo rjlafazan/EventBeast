@@ -14,7 +14,11 @@ export default class EventCard extends React.Component {
       expanded: false,
     };
   };
-  handleClick = ()=> this.setState({expanded: !this.state.expanded});
+  handleClick = ()=> {
+    this.setState({expanded: !this.state.expanded});
+    if(!this.state.expanded)
+      this.props.onClick(this.props.num)
+  }
 
   render(){
     const date = new Date(this.props.event.start);//cuz in miliseconds
