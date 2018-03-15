@@ -13,6 +13,7 @@ import Nav from './components/NavBar';
 import SearchBar from './components/SearchBar';
 import SideBar from './components/SideBar';
 import GoogleMap from './components/GoogleMap';
+import MeetUp from './components/MeetUp'
 
 //API
 import {
@@ -29,9 +30,9 @@ class App extends Component {
     this.state = {
       eventCategories: [],
       events: [],
-      loading: true,
+      loading: false,
       activeEvent: null,
-      sidebar: false,
+      sidebar: true,
       center: {
         lat: 38.58011,
         lng: -121.487503,
@@ -41,16 +42,17 @@ class App extends Component {
         radius: 1,
         category: 0,
       },
+      query: {
+        update: false,
+        loc: '',
+        rad: null,
+        cat: null,
+      },
       searchError: '',
       showingInfoWindow: false,
-      update: false,
-      redirect: {
-        yes: false,
-        pathname: '/project1/',
-        search: ''
-      }
     }
-    this.fetchData = this.fetchData.bind(this);
+    this.pushHistory = this.pushHistory.bind(this);
+    this.getMeetUps = this.getMeetUps.bind(this);
     this.callBack = this.callBack.bind(this);
     this.createServices = this.createServices.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
@@ -59,6 +61,49 @@ class App extends Component {
     this.setPlace = this.setPlace.bind(this);
     this.getMarkerClick = this.getMarkerClick.bind(this);
     this.getMapClick = this.getMapClick.bind(this);
+    this.setSearch = this.setSearch.bind(this);
+  }
+  pushHistory(){
+    var searchQuery = {
+      loc: this.state.search.city,
+      rad: this.state.search.radius,
+      cat: this.state.search.category
+    }
+    var qstr = queryString.stringify(searchQuery);
+    
+    var qstrcmp = "?"+qstr;
+    if(qstrcmp.localeCompare(this.props.location.search) !== 0){
+      this.props.history.push({
+        pathname: '/project1/search',
+        search: qstrcmp
+      })
+    }
+  }
+  getMeetUps(status, circleOptions, meetupArray){
+    if(status === 'OK'){
+      var radius = this.milesToMeters(circleOptions.radius);
+      var newLatLng = new this.google.maps.LatLng(circleOptions.center.lat, circleOptions.center.lng);
+      var circleOpts = {
+        center: newLatLng,
+        radius: radius
+      };
+      var circle = new this.google.maps.Circle(circleOpts);
+      this.map.fitBounds(circle.getBounds());
+      this.setState({
+        searchError: '',
+        events: meetupArray,
+        showingInfoWindow: false,
+        activeEvent: null,
+        loading: false,
+        query: {
+          update: false
+        }
+      })
+      this.pushHistory()
+    }
+    else{
+      this.setState({searchError: status, loading: false, query:{update: false}})
+    }
   }
   getRadius(rad){
     switch(rad){
@@ -75,69 +120,18 @@ class App extends Component {
   milesToMeters(miles) {
     return miles * 1609;
   }
-  fetchData(searchQuery){
-    searchQuery.cat = parseInt(searchQuery.cat)
-    searchQuery.rad = parseInt(searchQuery.rad)
-    this.geocoder.geocode({address: searchQuery.loc}, (results, status) => {
-      if(status === 'OK'){
-        var lat = results[0].geometry.location.lat();
-        var lng = results[0].geometry.location.lng();
-        var radius = this.milesToMeters(this.getRadius(searchQuery.rad))
-        var newLatLng = new this.google.maps.LatLng(lat, lng);
-        var circleOptions = {
-          center: newLatLng,
-          radius: radius
-        };
-        var circle = new this.google.maps.Circle(circleOptions);
-        this.map.fitBounds(circle.getBounds());
-        MeetUpCategories[searchQuery.cat].updateParam({
-          lat: lat,
-          lon: lng,
-          radius: this.getRadius(searchQuery.rad)
-        });
-        MeetUpCategories[searchQuery.cat].fetchP(data=>{
-          var meetupArray = parseMeetup(data.data);
-          this.setState({
-            sidebar: true,
-            searchError: '',
-            events: meetupArray,
-            showingInfoWindow: false,
-            activeEvent: null
-          })
-        });
-      }
-      else{
-        this.setState({searchError: status})
-      }
-    });
-  }
 
 
   callBack(){
-    console.log('callback');
-    var searchQuery = {
-      loc: this.state.search.city,
-      rad: this.state.search.radius,
-      cat: this.state.search.category
-    }
-    
-    this.fetchData(searchQuery);
-    var qstr = queryString.stringify({
-      loc: this.state.search.city,
-      rad: this.state.search.radius,
-      cat: this.state.search.category
-    });
-
-    var qstrcmp = "?"+qstr;
-    if(qstrcmp.localeCompare(this.props.location.search) !== 0){
-      this.setState({
-        redirect: {
-          yes: true,
-          pathname: '/project1/',
-          search: qstr,
-        }
-      })
-    }
+    this.setState({
+      query: {
+        update: true,
+        loc: this.state.search.city,
+        rad: this.getRadius(parseInt(this.state.search.radius)),
+        cat: parseInt(this.state.search.category)
+      },
+      loading: true
+    })
   }
 
   setPlace(){
@@ -161,16 +155,7 @@ class App extends Component {
     this.autoComplete.bindTo('bounds', this.map);
     this.autoComplete.addListener('place_changed', this.setPlace);
     this.geocoder = new google.maps.Geocoder();
-    if(this.state.update === true){
-      this.state.update = false;
-      var searchQuery = {
-        loc: this.state.search.city,
-        rad: this.state.search.radius,
-        cat: this.state.search.category
-      }
-      this.fetchData(searchQuery);
-    }
-    this.setState({ loading: false });
+    this.forceUpdate();
   }
   onSearchChange(event) {
     this.setState({
@@ -224,71 +209,38 @@ class App extends Component {
     });
   }
 
+  setSearch(){
+    var searchQuery = queryString.parse(this.props.location.search)
+    this.setState({
+        search: {
+          city: searchQuery.loc,
+          radius: parseInt(searchQuery.rad),
+          category: parseInt(searchQuery.cat)
+        },
+        query: {
+          update: true,
+          loc: searchQuery.loc,
+          rad: parseInt(this.getRadius(parseInt(searchQuery.rad))),
+          cat: parseInt(searchQuery.cat)
+        },
+        loading: true
+    })
+  }
+
   componentDidMount(){
-    if(this.props.history.action === "POP" && this.props.location.search){
-      var searchQuery = queryString.parse(this.props.location.search)
-      this.setState({
-        update: true,
-          search: {
-            city: searchQuery.loc,
-            radius: parseInt(searchQuery.rad),
-            category: parseInt(searchQuery.cat)
-          }
-      })
+    if(this.props.location.search){
+      this.setSearch();
     }
   }
   componentDidUpdate(prevProps, prevState){
     var searchQuery;
-    if(this.state.redirect.yes){
-      this.setState({
-        redirect: {
-          yes: false,
-          pathname: this.state.redirect.pathname,
-          search: this.state.redirect.search
-        }
-      })
-    }
-    if(this.props.history.action === "POP" && this.props.location.search && this.props.location.search !== prevProps.location.search && this.geocoder){
-      searchQuery = queryString.parse(this.props.location.search)
-      this.setState({
-          search: {
-            city: searchQuery.loc,
-            radius: parseInt(searchQuery.rad),
-            category: parseInt(searchQuery.cat)
-          }
-      })
-      this.fetchData(searchQuery);
-    }
-    else if(this.props.history.action === "POP" && this.props.location.search && this.props.location.search !== prevProps.location.search){
-      searchQuery = queryString.parse(this.props.location.search)
-      this.setState({
-        update: true,
-          search: {
-            city: searchQuery.loc,
-            radius: parseInt(searchQuery.rad),
-            category: parseInt(searchQuery.cat)
-          }
-      })
+    if(this.props.history.action === "POP" && this.props.location.search && this.props.location.search !== prevProps.location.search){
+      this.setSearch();
     }
   }
 
 
   render() {
-    if(this.state.loading){
-      return (
-      <GoogleMap
-      center={this.state.center}
-      markers={this.state.events}
-      createServices={this.createServices}
-      getMarkerClick={this.getMarkerClick}
-      getMapClick={this.getMapClick}
-      showingInfoWindow={this.state.showingInfoWindow}
-      activeMarker={this.state.activeEvent}
-      visible={false}
-    />);
-    }
-    else
-    {
     return (
       <CSSTransitionGroup
       transitionName = "tunnelIn"
@@ -328,12 +280,23 @@ class App extends Component {
               activeMarker={this.state.activeEvent}
               visible={true}
             />
+            {this.state.loading && 
+              <div 
+                style={{
+                    zIndex:5,
+                    position: 'absolute',
+                    backgroundColor: '#fff',
+                    top: '50%',
+                    left: '50%',
+                    fontSize: '64px'
+                  }}
+                >Loading...
+              </div>}
           </div>
-          {this.state.redirect.yes && <Redirect push to={this.state.redirect} />}
+          {this.geocoder && <MeetUp geocoder={this.geocoder} search={this.state.query} getMeetUps={this.getMeetUps} />}
         </CSSTransitionGroup>
       );
     }
-  }
 }
 
 export default App;
