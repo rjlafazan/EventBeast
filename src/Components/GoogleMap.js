@@ -29,6 +29,7 @@ export class MapContainer extends Component {
         }
         // this.getWeather = this.getWeather.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handleLike = this.handleLike.bind(this);
     }
     
 // getWeather(data){
@@ -37,21 +38,16 @@ export class MapContainer extends Component {
 createServices = (mapProps, map) =>{
     this.props.createServices(mapProps,map);
 }
-
-onMarkerClick(props, marker, e){
-    // //get weather data for the event clicked 
-    // getWeatherData(this.props.markers[props.num], this.getWeather);
-
+handleLike(props){
     var eventID;
     var currentRef;
-
     var canLike = true;
     if(this.props.activeMarker){
         eventID = this.props.markers[this.props.activeMarker].id;
         currentRef = eventRef.child(eventID);
         currentRef.off();
       }
-    eventID = this.props.markers[props.num].id;
+    eventID = this.props.markers[props.activeMarker].id;
     currentRef = eventRef.child(eventID);
     currentRef.on('value', snapshot=>{
         if(snapshot.val()){
@@ -70,6 +66,12 @@ onMarkerClick(props, marker, e){
             })
         }
     })
+}
+
+onMarkerClick(props, marker, e){
+    // //get weather data for the event clicked 
+    // getWeatherData(this.props.markers[props.num], this.getWeather);
+
     this.props.getMarkerClick({
       activeMarker: props.num,
     });
@@ -101,7 +103,9 @@ shouldComponentUpdate(nextProps, nextState){
     return true;
 }
 componentWillReceiveProps(nextProps){
-
+    if (this.props.activeMarker !== nextProps.activeMarker){
+        this.handleLike(nextProps);
+    }
 }
 handleClick(event){
     if(event.target.id === 'like'){
