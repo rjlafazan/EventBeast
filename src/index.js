@@ -9,8 +9,8 @@ import {Route, BrowserRouter as Router} from 'react-router-dom'
 ReactDOM.render(
 <Router>
     <div>
-        <Route exact path='/project1' component={Landing} />
-        <Route path='/project1/search' component={App} />
+        {/* <Route exact path='/project1' component={Landing} /> */}
+        <Route path='/project1/' component={App} />
     </div>
 </Router>, 
 document.getElementById('root'));
