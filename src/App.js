@@ -32,7 +32,7 @@ class App extends Component {
       events: [],
       loading: false,
       activeEvent: null,
-      sidebar: false,
+      sidebar: true,
       center: {
         lat: 38.58011,
         lng: -121.487503,

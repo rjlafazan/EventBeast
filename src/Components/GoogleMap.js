@@ -27,7 +27,7 @@ export class MapContainer extends Component {
             collapse: true,
             weather: null
         }
-        this.getWeather = this.getWeather.bind(this);
+        // this.getWeather = this.getWeather.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
     
