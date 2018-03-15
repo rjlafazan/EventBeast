@@ -1,7 +1,34 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton'
-import Dialog from 'material-ui/Dialog'
+import Dialog from 'material-ui/Dialog';
+import MenuItem from 'material-ui/MenuItem';
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton'
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
+
+class Logged extends React.Component {
+	onClick = ()=>{
+		this.props.onClick();
+	}
+	handleLogIn= ()=>{
+		window.location.replace('https://secure.meetup.com/oauth2/authorize?client_id=ae019qqgm2059qiao2v8kg76nf&response_type=token&redirect_uri=https://jaseat.github.io/project1/login')
+	};
+	render(){
+		return (
+		<IconMenu
+		  iconButtonElement={
+			<IconButton><MoreVertIcon /></IconButton>
+		  }
+		  targetOrigin={{horizontal: 'right', vertical: 'top'}}
+		  anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+		>
+		  <MenuItem primaryText="Login" onClick={this.handleLogIn}/>
+		  <MenuItem primaryText="About Us" onClick={this.onClick} />
+		</IconMenu>	
+		)
+	}
+}
 
 export default class Nav extends React.Component {
 	constructor(props){
@@ -11,9 +38,6 @@ export default class Nav extends React.Component {
 		}
 	}
 	handleOpenDialog = ()=>this.setState({open: true});
-	handleLogIn= ()=>{
-		window.location.replace('https://secure.meetup.com/oauth2/authorize?client_id=ae019qqgm2059qiao2v8kg76nf&response_type=token&redirect_uri=https://jaseat.github.io/project1/login')
-	};
 	handleClose=()=>this.setState({open: false});
 	render(){
 		return(
@@ -21,7 +45,8 @@ export default class Nav extends React.Component {
 			// title={<div><img src = {require('../img/Logo.png')} style = {{width:64,height:64}}/><span>Event Beast</span></div>}
 			title = 'Event Beast'
 			showMenuIconButton={false}
-			iconElementRight={<FlatButton label="Log In" onClick={this.handleLogIn} />}
+			iconElementRight={<Logged onClick={this.handleOpenDialog}/>}
+			// iconElementRight={<FlatButton label="Log In" onClick={this.handleLogIn} />}
 			// iconElementRight={<FlatButton label="About Us" onClick={this.handleOpenDialog} />}>
 			>
 				<Dialog
