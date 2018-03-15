@@ -18,6 +18,9 @@ export default class EventCard extends React.Component {
     this.setState({expanded: !this.state.expanded});
     if(!this.state.expanded)
       this.props.onClick(this.props.num)
+    else{
+      this.props.onClick(null);
+    }
   }
   componentDidUpdate(prevProps, prevState){
     if(prevState.expanded !== this.props.active)

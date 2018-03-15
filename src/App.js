@@ -59,20 +59,28 @@ class App extends Component {
     this.setSearch = this.setSearch.bind(this);
   }
   sideBarClick = num => {
-    var meets = this.state.events.slice(0);
-    getWeatherData(meets[num]).then(meetWithWeather => {
-      meets[num] = meetWithWeather;
-      this.setState({
-        events: meets,
+    if(num !== null){
+      var meets = this.state.events.slice(0);
+      getWeatherData(meets[num]).then(meetWithWeather => {
+        meets[num] = meetWithWeather;
+        this.setState({
+          events: meets,
+        });
       });
-    });
-    var e = this.state.events[num];
-    var newCenter = new this.google.maps.LatLng(e.lat, e.lng);
-    this.map.setCenter(newCenter);
-    this.setState({
-      showingInfoWindow: true,
-      activeEvent: num,
-    });
+      var e = this.state.events[num];
+      var newCenter = new this.google.maps.LatLng(e.lat, e.lng);
+      this.map.setCenter(newCenter);
+      this.setState({
+        showingInfoWindow: true,
+        activeEvent: num,
+      });
+    }
+    else{
+      this.setState({
+        showingInfoWindow: false,
+        activeEvent: num,
+      });
+    }
   };
   pushHistory() {
     var searchQuery = {
