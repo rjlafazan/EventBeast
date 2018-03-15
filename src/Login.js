@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom'
+import queryString from 'query-string'
 
 export default class Login extends Component{
     constructor(props){
         super(props);
         this.state = {
             redirect: false,
-            time: 5
+            time: 20
         }
         this.redirect = this.redirect.bind(this);
+        this.hash = {};
     }
     redirect(){
         var time = this.state.time;
@@ -22,13 +24,17 @@ export default class Login extends Component{
             })
         }
     }
-    componentDidMount(){
-        var timer = setInterval(this.redirect, 1000);
+    componentWillMount(){
+        // var timer = setInterval(this.redirect, 1000);
+        this.hash = queryString.parse(this.props.location.hash);
+        console.log(this.hash)
+        console.log('access_token' in this.hash)
     }
     render(){
+        console.log(this.hash);
         return(
             <div>
-                <h1>Login successful</h1>
+                {'access_token' in this.hash ? <h1>Login successful</h1> : <h1>Login failed</h1>}
                 <h2>Redirecting in {this.state.time} seconds</h2>
                 {this.state.redirect && <Redirect to={'/project1/search'} />}
             </div>
