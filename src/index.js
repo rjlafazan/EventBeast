@@ -12,7 +12,7 @@ ReactDOM.render(
     <div>
         <Route exact path='/project1' component={Landing} />
         <Route path='/project1/search' component={App} />
-        <Route path='/project1/login' />
+        <Route path='/project1/login' component={Login}/>
     </div>
 </Router>, 
 document.getElementById('root'));
