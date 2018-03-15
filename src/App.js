@@ -219,6 +219,7 @@ class App extends Component {
 
   getMapClick() {
     this.setState({
+      activeEvent: null,
       showingInfoWindow: false,
     });
   }
