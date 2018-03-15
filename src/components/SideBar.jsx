@@ -16,6 +16,5 @@ export default class SideBar extends React.Component {
           <EventCard key = {event.id} event = {event}/>)}
       </Drawer>
     );
-
   }
 }

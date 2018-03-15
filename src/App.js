@@ -32,7 +32,7 @@ class App extends Component {
       events: [],
       loading: false,
       activeEvent: null,
-      sidebar: true,
+      sidebar: false,
       center: {
         lat: 38.58011,
         lng: -121.487503,
@@ -95,6 +95,7 @@ class App extends Component {
         showingInfoWindow: false,
         activeEvent: null,
         loading: false,
+        sidebar: true,
         query: {
           update: false
         }
@@ -102,7 +103,7 @@ class App extends Component {
       this.pushHistory()
     }
     else{
-      this.setState({searchError: status, loading: false, query:{update: false}})
+      this.setState({searchError: status, loading: false, sidebar: false, query:{update: false}})
     }
   }
   getRadius(rad){

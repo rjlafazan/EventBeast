@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom'
-import SearchBar from './Components/SearchBar';
+import SearchBar from './components/SearchBar';
 import {categories} from './api/MeetUpAPI';
-import GoogleMap from './Components/GoogleMap'
+import GoogleMap from './components/GoogleMap'
 import queryString from 'query-string'
 
 //Theme and styling
