@@ -103,9 +103,6 @@ shouldComponentUpdate(nextProps, nextState){
     return true;
 }
 componentWillReceiveProps(nextProps){
-    console.log('this props', this.props.activeMarker);
-    console.log('next props', nextProps.activeMarker);
-    console.log('showing info window', nextProps.showingInfoWindow);
     if (this.props.activeMarker !== nextProps.activeMarker && nextProps.showingInfoWindow){
         this.handleLike(nextProps);
     }
