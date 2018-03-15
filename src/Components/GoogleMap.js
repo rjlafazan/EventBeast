@@ -149,7 +149,7 @@ render() {
                 position={{lat: marker.lat, lng: marker.lng}} 
                 key={marker.key} 
                 description={marker.description}
-                icon = {require('../img/marker.png')}
+                icon = {require('../img/Map/marker.png')}
             />
         )}
         <InfoWindow

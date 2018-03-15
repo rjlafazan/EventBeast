@@ -26,6 +26,14 @@ export default class Nav extends React.Component {
 					onRequestClose={this.handleClose}
 					actions = {<FlatButton label = "Close" primary={true} onClick = {this.handleClose}/>}>
 						We are the best - fuck the rest!
+						<div>
+						<h3>Built using:</h3>
+						<img src = {require('../img/BuiltLogo/ReactLogo.png')} alt='react' style={{width: 100}}/>
+						<img src = {require('../img/BuiltLogo/materialLogo.svg')} alt = 'material-ui' style={{width:150}}/>
+						<img src = {require('../img/BuiltLogo/darkskyLogo.png')} alt = 'darkSky' style={{width:175}}/>
+						<img src = {require('../img/BuiltLogo/meetupLogo.svg')} alt = 'meetUp' style={{width:100, marginLeft:25}}/>
+						<img src = {require('../img/BuiltLogo/firebaseLogo.png')} alt ='firebase' style={{width:115, marginLeft:25}}/>
+						</div>
 				</Dialog>
 			</AppBar>
 		)

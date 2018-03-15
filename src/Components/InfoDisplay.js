@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 //material theme
 import BeastTheme from '../style/BeastTheme';
-import NewZIndex from '../style/NewZIndex';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import '../style/App.css';
-import { CSSTransitionGroup } from 'react-transition-group'; // ES6//entering animation
 import Paper from 'material-ui/Paper';
 // import '../style/InfoDisplay.css';
 
@@ -32,7 +29,7 @@ export default class InfoDisplay extends Component {
       <div className="dayWeather">
         <Paper style={style} zDepth={2}>
           <img
-            src={require(`../../img/${props.icon}-icon.png`)}
+            src={require(`../img/Weather/${props.icon}-icon.png`)}
             alt={props.icon}
             width="75%"
           />
@@ -62,7 +59,7 @@ export default class InfoDisplay extends Component {
       <Paper style={style} zDepth={2} key={val[0].time}>
         <p style={styleP}>{hour}</p>
         <img
-          src={require(`../../img/${val[0].icon}-icon.png`)}
+          src={require(`../img/Weather/${val[0].icon}-icon.png`)}
           alt={val[0].icon}
           width="75%"
         />
