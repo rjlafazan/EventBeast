@@ -1,7 +1,25 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton'
-import Dialog from 'material-ui/Dialog'
+import Dialog from 'material-ui/Dialog';
+import MenuItem from 'material-ui/MenuItem';
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton'
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
+
+const Logged = (props) => (
+	<IconMenu
+	  {...props}
+	  iconButtonElement={
+		<IconButton><MoreVertIcon /></IconButton>
+	  }
+	  targetOrigin={{horizontal: 'right', vertical: 'top'}}
+	  anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+	>
+	  <MenuItem primaryText="Login" />
+	  <MenuItem primaryText="About Us" />
+	</IconMenu>
+  );
 
 export default class Nav extends React.Component {
 	constructor(props){
@@ -21,7 +39,8 @@ export default class Nav extends React.Component {
 			// title={<div><img src = {require('../img/Logo.png')} style = {{width:64,height:64}}/><span>Event Beast</span></div>}
 			title = 'Event Beast'
 			showMenuIconButton={false}
-			iconElementRight={<FlatButton label="Log In" onClick={this.handleLogIn} />}
+			iconElementRight={<Logged />}
+			// iconElementRight={<FlatButton label="Log In" onClick={this.handleLogIn} />}
 			// iconElementRight={<FlatButton label="About Us" onClick={this.handleOpenDialog} />}>
 			>
 				<Dialog
