@@ -7,7 +7,7 @@ export default class Login extends Component{
         super(props);
         this.state = {
             redirect: false,
-            time: 20
+            time: 5
         }
         this.redirect = this.redirect.bind(this);
         this.hash = {};
@@ -25,13 +25,10 @@ export default class Login extends Component{
         }
     }
     componentWillMount(){
-        // var timer = setInterval(this.redirect, 1000);
+        var timer = setInterval(this.redirect, 1000);
         this.hash = queryString.parse(this.props.location.hash);
-        console.log(this.hash)
-        console.log('access_token' in this.hash)
     }
     render(){
-        console.log(this.hash);
         return(
             <div>
                 {'access_token' in this.hash ? <h1>Login successful</h1> : <h1>Login failed</h1>}
